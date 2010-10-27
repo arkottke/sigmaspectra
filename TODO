@@ -1,0 +1,20 @@
+-Next Update-
+Need a better method of scaling the sigma -3 to 3 in steps of 0.01 seems too
+inefficient, but the parabola method has bugs. Plot the sigma error versus
+sigmaInf for a variety of suites.
+
+When components are combined provide a tab that shows the average response spectrum for each combination.
+
+Ability to plot CDF at various periods 
+
+Dies in the middle of a large run -- Rachelle used a seed of 6
+Warning if no files are selected for exporting
+
+
+-Future-
+Allow for non AT2 files to be processed by the program
+
+-Possibilities-
+XML data file to contain information for how to process a variety of filetypes
+
+
