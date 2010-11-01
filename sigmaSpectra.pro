@@ -2,44 +2,49 @@ TEMPLATE = app
 CONFIG += warn_on \
     debug_and_release
 QT += xml
-TARGET = 
-DEPENDPATH += . \
-    resources \
-    src
-INCLUDEPATH += .
-win32 { 
-    DEFINES += REVISION=$$system(cmd.exe /C "SubWCRev.exe . | perl.exe -ne\"if (/^Last/){s/\D+//; print;}\"")
-    LIBS += -lm \
-        -lfftw3-3 \
-        -L"C:\devel\fftw-3.2.2" \
-        -lgsl \
-        -lgslcblas \
-        -L"C:\devel\GnuWin32\lib"
-    INCLUDEPATH += . \
-        "C:\devel\fftw-3.2.2" \
-        "C:\devel\qwt-5.2\src" \
-        "C:\devel\GnuWin32\include"
-    RC_FILE = sigmaSpectra.rc
-    CONFIG( debug, debug|release ) {
-        # debug
-       LIBS += -lqwtd5 \
-           -L"C:\devel\qwt-5.2\lib"
-    } else{
-        # release
-       LIBS += -lqwt5 \
-          -L"C:\devel\qwt-5.2\lib"
-    }
-}
-unix { 
-    DEFINES += REVISION=$$system("svnversion . | perl -pne's/(?:\d+:)?(\d+)(?:[MS]+)?$/\1/'")
+
+# DEPENDPATH += . \
+#     resources \
+#     src
+
+# Grab the revision number using svnversion. This is later cleaned up using a regular expression
+DEFINES += REVISION=$$system(python getSvnVersion.py)
+
+unix {
+    DEFINES += GSL_LIB=$$system("env | grep GSL_LIB")
+    DEFINES += GSL_INCLUDE=$$system("env | grep GSL_INCLUDE")
     LIBS += -lm \
         -lfftw3 \
         -lgsl \
-        -lqwt \
-        -lgslcblas
+        -lgslcblas \
+        -L\${GSL_LIB} \
+        -lqwt-qt4
     INCLUDEPATH += . \
-        "/usr/include/" \
-        "/usr/include/qwt"
+        "/usr/include/qwt-qt4" \
+        \${GSL_INCLUDE}
+    target.path = bin
+    INSTALLS = target
+}
+
+win32 { 
+    LIBS += -lm \
+        -lfftw3-3 \
+        -L"C:/devel/fftw-3.2.2" \
+        -lgsl \
+        -lgslcblas \
+        -L"C:/devel/GnuWin32/bin"
+    INCLUDEPATH += . \
+        "C:/devel/fftw-3.2.2" \
+        "C:/devel/qwt-5.2/src" \
+        "C:/devel/GnuWin32/include"
+    RC_FILE = sigmaSpectra.rc
+    CONFIG(debug, debug|release ) {
+        LIBS += -lqwtd5 \
+            -L"C:/devel/qwt-5.2/lib"
+    } else {
+        LIBS += -lqwt5 \
+            -L"C:/devel/qwt-5.2/lib"
+    }
 }
 
 # Input

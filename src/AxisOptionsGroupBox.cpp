@@ -82,11 +82,18 @@ AxisOptionsGroupBox::AxisOptionsGroupBox( QwtPlot * plot, int axisId, const QStr
         m_autoCheckBox->setChecked(true);
     else
         m_autoCheckBox->setChecked(false);
-    
-    m_minLineEdit->setText(
-            QString::number(m_plot->axisScaleDiv(m_axisId)->lowerBound()));
-    m_maxLineEdit->setText(
-            QString::number(m_plot->axisScaleDiv(m_axisId)->upperBound()));
+
+    QwtScaleDiv* scaleDiv = m_plot->axisScaleDiv(m_axisId); 
+#if QWT_VERSION < 0x050200
+	double lower = scaleDiv->lBound();
+	double upper = scaleDiv->hBound();
+#else
+	double lower = scaleDiv->lBound();
+	double upper = scaleDiv->upperBound();
+#endif
+
+    m_minLineEdit->setText(QString::number(lower));
+    m_maxLineEdit->setText(QString::number(upper));
 }
 
 void AxisOptionsGroupBox::saveValues()

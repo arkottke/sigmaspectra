@@ -91,13 +91,17 @@ void MainWindow::help()
 void MainWindow::about()
 {
    QMessageBox::about(this, tr("About SigmaSpectra"),
-            QString(tr("SigmaSpectra was coded by Albert Kottke"
-			   " and is released under the GNU General Public License (GPL). Feel free"
-			  " to contact me regarding questions, comments, or requests for the source code."
-				"<br><br>"
-				"Albert Kottke <a href='mailto:albert@mail.utexas.edu'>albert@mail.utexas.edu</a>"
-				"<br><br>"
-				"Revision: %1"
+		   QString(tr(
+				   "SigmaSpectra was written by Albert Kottke"
+				   " and is released under the GNU General Public License (GPL)."
+				   " Bug reports and feature requests can be made at the website."
+				   "<br><br>"
+				   "<a href='http://nees.org/tools/sigmaspectra/'>http://nees.org/tools/sigmaspectra/</a>"
+				   "<br><br>"
+				   "Albert Kottke <a href='mailto:albert.kottke@gmail.com'>albert.kottke@gmail.com</a>"
+				   "<br><br>"
+				   "Revision: %1"
+				   "<br><br>"
                )).arg(REVISION));
 }
         
