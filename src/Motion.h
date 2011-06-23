@@ -54,6 +54,16 @@ protected:
     //! Read the file and compute the response spectrum
     void processFile();
 
+    /*! Compute the acceleration response spectrum.
+         * \param damping damping of the oscillators
+         * \param period natural periods of the oscillators
+         * \param freq frequency of the Fourier amplitude spectrum
+         * \param fas Fourier amplitude spectrum
+         * \return response spectrum
+         */
+    QVector<double> calcRespSpec( const double damping, const QVector<double> & period,
+                                 const QVector<double> & freq, const QVector<std::complex<double> > & fas );
+
     //! Cumulative integration by the trapezoid rule
     static QVector<double> cumtrapz( const QVector<double>& ft, const double dt, const double scale = 1.0);
 
@@ -71,15 +81,6 @@ protected:
          * \param ts time series
          */
     static void ifft( const QVector< std::complex<double> >& fas, QVector<double>& ts );
-
-    /*! Compute the acceleration response spectrum.
-         * \param damping damping of the oscillators
-         * \param period natural periods of the oscillators
-         * \param freq frequency of the Fourier amplitude spectrum
-         * \param fas Fourier amplitude spectrum
-         * \return response spectrum
-         */
-    static QVector<double> calcRespSpec( const double damping, const QVector<double> & period, const QVector<double> & freq, const QVector<std::complex<double> > & fas );
 
     /*! Compute a single-degree of freedom transfer function.
          * \param damping damping of the oscillator
@@ -114,7 +115,7 @@ protected:
     QVector<double> m_disp;
 
     //! Peak ground acceleration
-    double	m_pga;
+    double m_pga;
 
     //! Peak ground velocity LENGTH/second (based on gravity)
     double m_pgv;

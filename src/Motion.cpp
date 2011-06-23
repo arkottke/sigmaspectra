@@ -279,19 +279,39 @@ void Motion::processFile()
     m_avgLnSa = sum / m_lnSa.size();
 }
 
-QVector<double> Motion::calcRespSpec( const double damping, const QVector<double> & period, const QVector<double>& freq, const QVector<std::complex<double> >& fas )
+QVector<double> Motion::calcRespSpec(const double damping, const QVector<double> & period, const QVector<double>& freq, const QVector<std::complex<double> >& fas )
 {
     // Allocate the space for the response
-    QVector<std::complex<double> > Y(fas.size());
+
     QVector<std::complex<double> > tf(fas.size());
     QVector<double> ts;
     QVector<double> sa(period.size());
 
-    for ( int i = 0; i < period.size(); i++ )
-    {
-        calcSdofTf( damping, 1 / period.at(i), freq, tf );
+    const double deltaFreq = 1 / (m_dt * m_time.size());
+
+    for ( int i = 0; i < period.size(); i++ ) {
+        const double f = 1 / period.at(i);
+
+        /*
+        The FAS needs to extend to have a sampling rate that is 10 times larger
+        than the maximum frequency which corresponds to 5 times larger Nyquist
+        frequency. This is required for sufficient resolution of the peak value
+        in the time domain. For example, at a frequency 100 Hz (period of 0.01
+        sec) the FAS has to extend to 500 Hz. The FAS is initialized to be zero
+        which allows for resolution of the time series.
+        */
+        const int size = qMax(fas.size(), int((f * 5.0) / deltaFreq));
+        QVector<std::complex<double> > Y(size,
+                                         std::complex<double>(0., 0.));
+
+        // The amplitude of the FAS needs to be scaled to reflect the increased
+        // number of points.
+        const double scale = double(Y.size()) / double(fas.size());
+
+        // Only apply the SDOF transfer function over frequencies defined by the original motion
+        calcSdofTf( damping, f, freq, tf );
         for ( int j = 0; j < fas.size(); j++ )
-            Y[j] = tf.at(j) * fas.at(j);
+            Y[j] = scale * tf.at(j) * fas.at(j);
 
         // Compute the inverse
         ifft( Y, ts );

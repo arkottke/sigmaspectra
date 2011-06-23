@@ -34,13 +34,13 @@ void myMessageOutput(QtMsgType type, const char *msg)
                         */
         break;
     case QtWarningMsg:
-        QMessageBox::warning( 0, "UTMS", msg );
+        QMessageBox::warning( 0, "SigmaSpectra", msg );
         break;
     case QtCriticalMsg:
-        QMessageBox::critical( 0, "UTMS", msg );
+        QMessageBox::critical( 0, "SigmaSpectra", msg );
         break;
     case QtFatalMsg:
-        QMessageBox::critical( 0, "UTMS", msg );
+        QMessageBox::critical( 0, "SigmaSpectra", msg );
         //abort();
     }
 }

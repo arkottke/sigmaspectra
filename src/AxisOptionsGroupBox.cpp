@@ -85,11 +85,11 @@ AxisOptionsGroupBox::AxisOptionsGroupBox( QwtPlot * plot, int axisId, const QStr
 
     QwtScaleDiv* scaleDiv = m_plot->axisScaleDiv(m_axisId); 
 #if QWT_VERSION < 0x050200
-	double lower = scaleDiv->lBound();
-	double upper = scaleDiv->hBound();
+    double lower = scaleDiv->lBound();
+    double upper = scaleDiv->hBound();
 #else
-	double lower = scaleDiv->lBound();
-	double upper = scaleDiv->upperBound();
+    double lower = scaleDiv->lowerBound();
+    double upper = scaleDiv->upperBound();
 #endif
 
     m_minLineEdit->setText(QString::number(lower));

@@ -139,9 +139,15 @@ void SuiteDialog::motionSelected()
     const Motion * motion = m_selectedSuite->selectMotion(m_selectedMotionIndex);
 
     // Set the data
+#if QWT_VERSION < 0x60001
     m_tsCurves[0]->setData(motion->time().data(), motion->acc().data(), motion->time().size() );
     m_tsCurves[1]->setData(motion->time().data(), motion->vel().data(), motion->time().size() );
     m_tsCurves[2]->setData(motion->time().data(), motion->disp().data(), motion->time().size() );
+#else
+    m_tsCurves[0]->setSamples(motion->time(), motion->acc());
+    m_tsCurves[1]->setSamples(motion->time(), motion->vel());
+    m_tsCurves[2]->setSamples(motion->time(), motion->disp());
+#endif
 }
 
 void SuiteDialog::showTimeHistoryTab()
@@ -286,55 +292,97 @@ void SuiteDialog::plotSelectedSuite()
         int i = 0;
 
         for (i = 0; i < m_selectedSuite->motions().size(); ++i) {
+#if QWT_VERSION < 0x60001
             m_groupedRespSpecCurves[i]->setData(
                     m_selectedSuite->motions().at(i)->period().data(), 
                     m_selectedSuite->motions().at(i)->sa().data(), 
                     m_selectedSuite->motions().at(i)->period().size() );
+#else
+            m_groupedRespSpecCurves[i]->setSamples(
+                        m_selectedSuite->motions().at(i)->period(),
+                        m_selectedSuite->motions().at(i)->sa());
+#endif
             m_groupedRespSpecCurves[i]->setPen(QPen(Qt::darkGray));
             m_groupedRespSpecCurves[i]->setZ(m_zOrder);
         }
 
         // Set the average response spectrum
+#if QWT_VERSION < 0x60001
         m_groupedRespSpecCurves[i]->setData(
                 m_motionLibrary->period().data(),
                 m_selectedSuite->avgSa().data(),
                 m_motionLibrary->period().size());
+#else
+        m_groupedRespSpecCurves[i]->setSamples(
+                    m_motionLibrary->period(),
+                    m_selectedSuite->avgSa());
+#endif
         m_groupedRespSpecCurves[i]->setPen(QPen(QBrush(Qt::blue), 2, Qt::SolidLine));
         m_groupedRespSpecCurves[i]->setZ(m_zOrder+2);
 
+#if QWT_VERSION < 0x60001
         m_groupedRespSpecCurves[++i]->setData(
                 m_motionLibrary->period().data(),
                 m_selectedSuite->avgPlusStd().data(),
                 m_motionLibrary->period().size());
+#else
+        m_groupedRespSpecCurves[++i]->setSamples(
+                    m_motionLibrary->period(),
+                    m_selectedSuite->avgPlusStd());
+#endif
         m_groupedRespSpecCurves[i]->setPen(QPen(QBrush(Qt::blue), 2, Qt::DashLine));
         m_groupedRespSpecCurves[i]->setZ(m_zOrder+2);
 
+#if QWT_VERSION < 0x60001
         m_groupedRespSpecCurves[++i]->setData(
                 m_motionLibrary->period().data(),
                 m_selectedSuite->avgMinusStd().data(),
                 m_motionLibrary->period().size());
+#else
+        m_groupedRespSpecCurves[++i]->setSamples(
+                    m_motionLibrary->period(),
+                    m_selectedSuite->avgMinusStd());
+#endif
         m_groupedRespSpecCurves[i]->setPen(QPen(QBrush(Qt::blue), 2, Qt::DashLine));
         m_groupedRespSpecCurves[i]->setZ(m_zOrder+2);
 
         // Set the data target curves
+#if QWT_VERSION < 0x60001
         m_groupedRespSpecCurves[++i]->setData(
                 m_motionLibrary->period().data(),
                 m_motionLibrary->targetSa().data(),
                 m_motionLibrary->period().size());
+#else
+        m_groupedRespSpecCurves[++i]->setSamples(
+                    m_motionLibrary->period(),
+                    m_motionLibrary->targetSa());
+#endif
         m_groupedRespSpecCurves[i]->setPen(QPen(QBrush(Qt::red), 2, Qt::SolidLine));
         m_groupedRespSpecCurves[i]->setZ(m_zOrder+1);
 
+#if QWT_VERSION < 0x60001
         m_groupedRespSpecCurves[++i]->setData(
                 m_motionLibrary->period().data(),
                 m_motionLibrary->targetSaPlusStd().data(),
                 m_motionLibrary->period().size());
+#else
+        m_groupedRespSpecCurves[++i]->setSamples(
+                m_motionLibrary->period(),
+                m_motionLibrary->targetSaPlusStd());
+#endif
         m_groupedRespSpecCurves[i]->setPen(QPen(QBrush(Qt::red), 2, Qt::DashLine));
         m_groupedRespSpecCurves[i]->setZ(m_zOrder+1);
 
+#if QWT_VERSION < 0x60001
         m_groupedRespSpecCurves[++i]->setData(
                 m_motionLibrary->period().data(),
                 m_motionLibrary->targetSaMinusStd().data(),
                 m_motionLibrary->period().size());
+#else
+        m_groupedRespSpecCurves[++i]->setSamples(
+                m_motionLibrary->period(),
+                m_motionLibrary->targetSaMinusStd());
+#endif
         m_groupedRespSpecCurves[i]->setPen(QPen(QBrush(Qt::red), 2, Qt::DashLine));
         m_groupedRespSpecCurves[i]->setZ(m_zOrder+1);
 
@@ -349,72 +397,126 @@ void SuiteDialog::plotSelectedSuite()
     
     for (i = 0; i < m_selectedSuite->rowCount(); ++i ) {
         const Motion * motion = m_selectedSuite->selectMotion(i);
+
+#if QWT_VERSION < 0x60001
         m_indivRespSpecCurves[i]->setData(
-                motion->period().data(), 
-                motion->sa().data(), 
+                motion->period().data(),
+                motion->sa().data(),
                 motion->period().size() );
+#else
+        m_indivRespSpecCurves[i]->setSamples(
+                motion->period(),
+                motion->sa());
+#endif
         m_indivRespSpecCurves[i]->setPen(QPen(Qt::darkGray));
         m_indivRespSpecCurves[i]->setZ(m_zOrder);
     }
     
     // Set the average response spectrum
+#if QWT_VERSION < 0x60001
     m_indivRespSpecCurves[i]->setData(
             m_motionLibrary->period().data(),
             m_selectedSuite->avgSa().data(),
             m_motionLibrary->period().size());
+#else
+    m_indivRespSpecCurves[i]->setSamples(
+                m_motionLibrary->period(),
+                m_selectedSuite->avgSa());
+#endif
     m_indivRespSpecCurves[i]->setPen(QPen(QBrush(Qt::blue), 2, Qt::SolidLine));
     m_indivRespSpecCurves[i]->setZ(m_zOrder+2);
     
+#if QWT_VERSION < 0x60001
     m_indivRespSpecCurves[++i]->setData(
             m_motionLibrary->period().data(),
             m_selectedSuite->avgPlusStd().data(),
             m_motionLibrary->period().size());
+#else
+    m_indivRespSpecCurves[++i]->setSamples(
+            m_motionLibrary->period(),
+            m_selectedSuite->avgPlusStd());
+#endif
     m_indivRespSpecCurves[i]->setPen(QPen(QBrush(Qt::blue), 2, Qt::DashLine));
     m_indivRespSpecCurves[i]->setZ(m_zOrder+2);
     
+#if QWT_VERSION < 0x60001
     m_indivRespSpecCurves[++i]->setData(
             m_motionLibrary->period().data(),
             m_selectedSuite->avgMinusStd().data(),
             m_motionLibrary->period().size());
+#else
+    m_indivRespSpecCurves[++i]->setSamples(
+            m_motionLibrary->period(),
+            m_selectedSuite->avgMinusStd());
+#endif
     m_indivRespSpecCurves[i]->setPen(QPen(QBrush(Qt::blue), 2, Qt::DashLine));
     m_indivRespSpecCurves[i]->setZ(m_zOrder+2);
 
     // Set the data target curves
+#if QWT_VERSION < 0x60001
     m_indivRespSpecCurves[++i]->setData(
             m_motionLibrary->period().data(),
             m_motionLibrary->targetSa().data(),
             m_motionLibrary->period().size());
+#else
+    m_indivRespSpecCurves[++i]->setSamples(
+            m_motionLibrary->period(),
+            m_motionLibrary->targetSa());
+#endif
     m_indivRespSpecCurves[i]->setPen(QPen(QBrush(Qt::red), 2, Qt::SolidLine));
     m_indivRespSpecCurves[i]->setZ(m_zOrder+1);
     
+#if QWT_VERSION < 0x60001
     m_indivRespSpecCurves[++i]->setData(
             m_motionLibrary->period().data(),
             m_motionLibrary->targetSaPlusStd().data(),
             m_motionLibrary->period().size());
+#else
+    m_indivRespSpecCurves[++i]->setSamples(
+            m_motionLibrary->period(),
+            m_motionLibrary->targetSaPlusStd());
+#endif
     m_indivRespSpecCurves[i]->setPen(QPen(QBrush(Qt::red), 2, Qt::DashLine));
     m_indivRespSpecCurves[i]->setZ(m_zOrder+1);
     
+#if QWT_VERSION < 0x60001
     m_indivRespSpecCurves[++i]->setData(
             m_motionLibrary->period().data(),
             m_motionLibrary->targetSaMinusStd().data(),
             m_motionLibrary->period().size());
+#else
+    m_indivRespSpecCurves[++i]->setSamples(
+            m_motionLibrary->period(),
+            m_motionLibrary->targetSaMinusStd());
+#endif
     m_indivRespSpecCurves[i]->setPen(QPen(QBrush(Qt::red), 2, Qt::DashLine));
     m_indivRespSpecCurves[i]->setZ(m_zOrder+1);
 
     m_indivRespSpecPlot->replot();
 
     // Plot the standard deviations
+#if QWT_VERSION < 0x60001
     m_stdCurves[0]->setData(
             m_motionLibrary->period().data(),
             m_motionLibrary->targetLnStd().data(),
             m_motionLibrary->period().size());
+#else
+    m_stdCurves[0]->setSamples(
+            m_motionLibrary->period(),
+            m_motionLibrary->targetLnStd());
+#endif
     m_stdCurves[0]->setPen(QPen(QBrush(Qt::blue), 2, Qt::SolidLine));
     
-    
+#if QWT_VERSION < 0x60001
     m_stdCurves[1]->setData(
             m_motionLibrary->period().data(),
             m_selectedSuite->lnStd().data(),
             m_motionLibrary->period().size());
+#else
+    m_stdCurves[1]->setSamples(
+                m_motionLibrary->period(),
+                m_selectedSuite->lnStd());
+#endif
     m_stdCurves[1]->setPen(QPen(QBrush(Qt::red), 2, Qt::SolidLine));
 }
 
@@ -493,11 +595,18 @@ void SuiteDialog::createTabWidget()
 
         connect( m_groupedRespSpecPlot, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showPlotContextMenu(QPoint)));
 
+#if QWT_VERSION < 0x060001
         QwtPlotPicker * picker = new QwtPlotPicker(
                 QwtPlot::xBottom, QwtPlot::yLeft, QwtPicker::PointSelection,
                 QwtPicker::CrossRubberBand, QwtPicker::ActiveOnly, m_groupedRespSpecPlot->canvas());
+#else
+        QwtPlotPicker * picker = new QwtPlotPicker(
+                    QwtPlot::xBottom, QwtPlot::yLeft,
+                    QwtPicker::CrossRubberBand, QwtPicker::ActiveOnly, m_groupedRespSpecPlot->canvas());
+        picker->setStateMachine(new QwtPickerDragPointMachine());
+#endif
 
-        connect( picker, SIGNAL(appended(QPoint)), this, SLOT(groupedRespSpecPointSelected(QPoint)));
+        connect(picker, SIGNAL(appended(QPoint)), this, SLOT(groupedRespSpecPointSelected(QPoint)));
 
 
         // Number of motion pairs
@@ -523,9 +632,17 @@ void SuiteDialog::createTabWidget()
 
     connect( m_indivRespSpecPlot, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showPlotContextMenu(QPoint)));
     
+#if QWT_VERSION < 0x060001
     QwtPlotPicker * picker = new QwtPlotPicker(
             QwtPlot::xBottom, QwtPlot::yLeft, QwtPicker::PointSelection,
-            QwtPicker::CrossRubberBand, QwtPicker::ActiveOnly, m_indivRespSpecPlot->canvas());
+            QwtPicker::CrossRubberBand, QwtPicker::AlwaysOn, m_indivRespSpecPlot->canvas());
+    picker->setStateMachine(new QwtPickerTrackerMachine());
+#else
+    QwtPlotPicker * picker = new QwtPlotPicker(
+                QwtPlot::xBottom, QwtPlot::yLeft,
+                QwtPicker::CrossRubberBand, QwtPicker::ActiveOnly, m_indivRespSpecPlot->canvas());
+    picker->setStateMachine(new QwtPickerDragPointMachine());
+#endif
 
     connect( picker, SIGNAL(appended(QPoint)), this, SLOT(indivRespSpecPointSelected(QPoint)));
 
@@ -577,9 +694,16 @@ void SuiteDialog::createTabWidget()
     connect( stdPlot, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showPlotContextMenu(QPoint)));
     
 
+#if QWT_VERSION < 0x060001
     picker = new QwtPlotPicker(
             QwtPlot::xBottom, QwtPlot::yLeft, QwtPicker::PointSelection,
             QwtPicker::CrossRubberBand, QwtPicker::ActiveOnly, stdPlot->canvas());
+#else
+    picker = new QwtPlotPicker(
+                QwtPlot::xBottom, QwtPlot::yLeft,
+                QwtPicker::CrossRubberBand, QwtPicker::ActiveOnly, stdPlot->canvas());
+    picker->setStateMachine(new QwtPickerTrackerMachine());
+#endif
 
     m_plotsTabWidget->addTab( stdPlot, tr("Standard Deviation") );
 
@@ -601,9 +725,16 @@ void SuiteDialog::createTabWidget()
 
     connect( accPlot, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showPlotContextMenu(QPoint)));
 
+#if QWT_VERSION < 0x060001
     picker = new QwtPlotPicker(
             QwtPlot::xBottom, QwtPlot::yLeft, QwtPicker::PointSelection,
             QwtPicker::CrossRubberBand, QwtPicker::ActiveOnly, accPlot->canvas());
+#else
+    picker = new QwtPlotPicker(
+                QwtPlot::xBottom, QwtPlot::yLeft,
+                QwtPicker::CrossRubberBand, QwtPicker::ActiveOnly, accPlot->canvas());
+    picker->setStateMachine(new QwtPickerTrackerMachine());
+#endif
 
     m_tsCurves << new QwtPlotCurve;
     m_tsCurves.last()->attach(accPlot);
@@ -620,9 +751,16 @@ void SuiteDialog::createTabWidget()
 
     connect( velPlot, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showPlotContextMenu(QPoint)));
     
+#if QWT_VERSION < 0x060001
     picker = new QwtPlotPicker(
             QwtPlot::xBottom, QwtPlot::yLeft, QwtPicker::PointSelection,
             QwtPicker::CrossRubberBand, QwtPicker::ActiveOnly, velPlot->canvas());
+#else
+    picker = new QwtPlotPicker(
+                QwtPlot::xBottom, QwtPlot::yLeft,
+                QwtPicker::CrossRubberBand, QwtPicker::ActiveOnly, velPlot->canvas());
+    picker->setStateMachine(new QwtPickerTrackerMachine());
+#endif
 
     m_tsCurves << new QwtPlotCurve;
     m_tsCurves.last()->attach(velPlot);
@@ -639,9 +777,16 @@ void SuiteDialog::createTabWidget()
 
     connect( dispPlot, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showPlotContextMenu(QPoint)));
     
+#if QWT_VERSION < 0x060001
     picker = new QwtPlotPicker(
             QwtPlot::xBottom, QwtPlot::yLeft, QwtPicker::PointSelection,
             QwtPicker::CrossRubberBand, QwtPicker::ActiveOnly, dispPlot->canvas());
+#else
+    picker = new QwtPlotPicker(
+                QwtPlot::xBottom, QwtPlot::yLeft,
+                QwtPicker::CrossRubberBand, QwtPicker::ActiveOnly, dispPlot->canvas());
+    picker->setStateMachine(new QwtPickerTrackerMachine());
+#endif
 
     m_tsCurves << new QwtPlotCurve;
     m_tsCurves.last()->attach(dispPlot);

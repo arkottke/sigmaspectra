@@ -44,11 +44,13 @@ FlagMotionsModel::FlagMotionsModel(QList<AbstractMotion*> & motions, QObject * p
 
 int FlagMotionsModel::rowCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent);
     return m_motions.size();
 }
 
 int FlagMotionsModel::columnCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent);
     return 2;
 }
 
@@ -202,9 +204,16 @@ FlagMotionsDialog::FlagMotionsDialog(QList<AbstractMotion*> & motions, QWidget *
         // Plots become too large vertically if not ignored
         plot->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Ignored);
 
+#if QWT_VERSION < 0x060001
         QwtPlotPicker * picker = new QwtPlotPicker(
                    QwtPlot::xBottom, QwtPlot::yLeft, QwtPicker::PointSelection,
                    QwtPicker::CrossRubberBand, QwtPicker::ActiveOnly, plot->canvas());
+#else
+        QwtPlotPicker * picker = new QwtPlotPicker(
+                    QwtPlot::xBottom, QwtPlot::yLeft,
+                    QwtPicker::CrossRubberBand, QwtPicker::ActiveOnly, plot->canvas());
+        picker->setStateMachine(new QwtPickerTrackerMachine());
+#endif
 
         Q_UNUSED(picker);
         for (int i = 0; i < m_count; ++i) {
@@ -253,9 +262,15 @@ void FlagMotionsDialog::selectMotion(const QModelIndex & current, const QModelIn
         }
 
         // Set the data
+#if QWT_VERSION < 0x060001
         m_tsCurves[0 + j]->setData(m->time().data(), m->acc().data(), m->time().size());
         m_tsCurves[m_count*1 + j]->setData(m->time().data(), m->vel().data(), m->time().size());
         m_tsCurves[m_count*2 + j]->setData(m->time().data(), m->disp().data(), m->time().size());
+#else
+        m_tsCurves[0 + j]->setSamples(m->time(), m->acc());
+        m_tsCurves[m_count*1 + j]->setSamples(m->time(), m->vel());
+        m_tsCurves[m_count*2 + j]->setSamples(m->time(), m->disp());
+#endif
     }
 }
 
