@@ -8,12 +8,12 @@
 
 ;--------------------------------
 ;Revision of the respository
-  !system '"C:\Program Files\TortoiseSVN\bin\SubWCRev.exe" . | perl.exe -ne"if (/^Last/){s/\D+/!define REVISION \1/; print;}" > %TEMP%\revision.nsh'
+  !system 'getSvnVersion.py "!define REVISION" > %TEMP%\revision.nsh'
   !include "$%TEMP%\revision.nsh"
 
 ;--------------------------------
 ; Path to Qt
-!Define QT_PATH "C:\devel\Qt\2010.03\qt"
+!Define QT_PATH "C:\devel\QtSDK\Desktop\Qt\4.7.4\mingw"
 
 ;--------------------------------
 ;Variables
@@ -120,7 +120,7 @@ Section "!Core Files" SecProgram
   file "${QT_PATH}\bin\QtGui4.dll"
   file "${QT_PATH}\bin\QtSvg4.dll"
   file "${QT_PATH}\bin\QtXml4.dll"
-  file "C:\devel\qwt-5.2\lib\qwt5.dll"
+  file "C:\devel\qwt-6.0\lib\qwt.dll"
   
   ;Plugins for SVG icons
   SetOutPath "$INSTDIR\iconengines" 

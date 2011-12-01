@@ -35,15 +35,15 @@ win32 {
         -L"C:/devel/GnuWin32/bin"
     INCLUDEPATH += . \
         "C:/devel/fftw-3.2.2" \
-        "C:/devel/qwt-5.2/src" \
+        "C:/devel/qwt-6.0/src" \
         "C:/devel/GnuWin32/include"
     RC_FILE = sigmaSpectra.rc
     CONFIG(debug, debug|release ) {
-        LIBS += -lqwtd5 \
-            -L"C:/devel/qwt-5.2/lib"
+        LIBS += -lqwtd \
+            -L"C:/devel/qwt-6.0/lib"
     } else {
-        LIBS += -lqwt5 \
-            -L"C:/devel/qwt-5.2/lib"
+        LIBS += -lqwt \
+            -L"C:/devel/qwt-6.0/lib"
     }
 }
 
