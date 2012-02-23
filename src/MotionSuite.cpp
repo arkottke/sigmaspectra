@@ -260,7 +260,7 @@ void MotionSuite::computeScalars()
     m_sigmaInf = minScale;
     m_stdevError = computeStdError( minScale, centroids );
 
-    qDebug() << minScale << m_scalars;
+    //qDebug() << minScale << m_scalars;
     
     // Compute the median spectral response
     m_avgSa.resize(m_lnAvg.size());

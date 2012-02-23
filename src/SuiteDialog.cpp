@@ -219,7 +219,6 @@ void SuiteDialog::indivRespSpecPointSelected(const QPoint & point)
 
 void SuiteDialog::showPlotContextMenu(const QPoint & point)
 {
-    qDebug() << sender();
     QwtPlot * plot = qobject_cast<QwtPlot*>(sender());
 
     if ( plot ) {

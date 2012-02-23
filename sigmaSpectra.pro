@@ -1,53 +1,25 @@
-TEMPLATE = app
-CONFIG += warn_on \
-    debug_and_release
-QT += xml
+# All settings should be modified from the strataconfig.pri file
+include(sigmaspectraconfig.pri)
 
-# DEPENDPATH += . \
-#     resources \
-#     src
-
-# Grab the revision number using svnversion. This is later cleaned up using a regular expression
+# Grab the revision number using svnversion and clean it up.
 DEFINES += REVISION=$$system(python getSvnVersion.py)
 
-unix {
-    DEFINES += GSL_LIB=$$system("env | grep GSL_LIB")
-    DEFINES += GSL_INCLUDE=$$system("env | grep GSL_INCLUDE")
-    LIBS += -lm \
-        -lfftw3 \
-        -lgsl \
-        -lgslcblas \
-        -L\${GSL_LIB} \
-        -lqwt-qt4
-    INCLUDEPATH += . \
-        "/usr/include/qwt-qt4" \
-        \${GSL_INCLUDE}
-    target.path = bin
-    INSTALLS = target
+# Flag based on if the program is compiled in debug mode. 
+CONFIG(debug, debug|release) {
+   DEFINES += DEBUG
 }
 
-win32 { 
-    LIBS += -lm \
-        -lfftw3-3 \
-        -L"C:/devel/fftw-3.2.2" \
-        -lgsl \
-        -lgslcblas \
-        -L"C:/devel/GnuWin32/bin"
-    INCLUDEPATH += . \
-        "C:/devel/fftw-3.2.2" \
-        "C:/devel/qwt-6.0/src" \
-        "C:/devel/GnuWin32/include"
-    RC_FILE = sigmaSpectra.rc
-    CONFIG(debug, debug|release ) {
-        LIBS += -lqwtd \
-            -L"C:/devel/qwt-6.0/lib"
-    } else {
-        LIBS += -lqwt \
-            -L"C:/devel/qwt-6.0/lib"
-    }
+# Directories for building
+CONFIG(debug, debug|release) {
+   DESTDIR = build/debug
+} else {
+   DESTDIR = build/release
 }
 
-# Input
+TEMPLATE = app
+TARGET = sigmaspectra
+QT += xml
+
 HEADERS += src/AbstractMotion.h \
     src/AxisOptionsGroupBox.h \
     src/ConfigurePlotDialog.h \
@@ -63,6 +35,7 @@ HEADERS += src/AbstractMotion.h \
     src/SuiteDialog.h \
     src/FlagMotionsDialog.h \
     src/StringListDelegate.h
+
 SOURCES += src/AbstractMotion.cpp \
     src/AxisOptionsGroupBox.cpp \
     src/ConfigurePlotDialog.cpp \
@@ -79,4 +52,5 @@ SOURCES += src/AbstractMotion.cpp \
     src/SuiteDialog.cpp \
     src/FlagMotionsDialog.cpp \
     src/StringListDelegate.cpp
+
 RESOURCES += resources/sigmaSpectra.qrc

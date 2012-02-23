@@ -101,19 +101,19 @@ void AxisOptionsGroupBox::saveValues()
     QwtScaleEngine * oldEngine = m_plot->axisScaleEngine(m_axisId);
     QwtScaleEngine * newEngine;
 
-    if ( m_spacingComboBox->currentIndex() == 0 )
+    if (m_spacingComboBox->currentIndex() == 0)
         newEngine = new QwtLinearScaleEngine;
     else
         newEngine = new QwtLog10ScaleEngine;
 
-    newEngine->setAttributes( oldEngine->attributes() );
+    newEngine->setAttributes(oldEngine->attributes());
 
     // Deletes the old engine
     m_plot->setAxisScaleEngine( m_axisId, newEngine );
 
     // Set the axis range
-    if ( m_autoCheckBox->isChecked() )
+    if (m_autoCheckBox->isChecked())
         m_plot->setAxisAutoScale(m_axisId);
     else
-        m_plot->setAxisScale( m_axisId, m_minLineEdit->text().toDouble(), m_maxLineEdit->text().toDouble() );
+        m_plot->setAxisScale(m_axisId, m_minLineEdit->text().toDouble(), m_maxLineEdit->text().toDouble() );
 }
