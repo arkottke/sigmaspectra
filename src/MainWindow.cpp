@@ -34,6 +34,7 @@
 #include <QMessageBox>
 #include <QMimeData>
 #include <QToolBar>
+#include <QUrl>
 #include <QVBoxLayout>
 #include <QtAlgorithms>
 
@@ -52,9 +53,6 @@ MainWindow::MainWindow(QMainWindow * parent)
             m_motionLibrary, SLOT(setDisabledCount(int)));
     connect(m_motionLibrary, SIGNAL(motionCountChanged(int)),
             this, SLOT(updateMotionCount(int)));
-   
-    //m_helpDialog = new HelpDialog(this);
-    //m_helpDialog->setWindowModality(Qt::NonModal);
     
     // Setup up the mainwindow
     createActions();
@@ -70,7 +68,6 @@ MainWindow::~MainWindow()
 {
     delete m_settings;
     delete m_motionLibrary;
-    delete m_helpDialog;
 }
 
 void MainWindow::copy()

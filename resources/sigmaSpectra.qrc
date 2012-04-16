@@ -19,19 +19,4 @@
         <file>images/list-remove.svg</file>
         <file>images/process-stop.svg</file>
     </qresource>
-
-	<qresource prefix="/doc/">
-		<file alias="manual0x.png">../manual/manual0x.png</file>
-		<file alias="manual1x.png">../manual/manual1x.png</file>
-		<file alias="manual2x.png">../manual/manual2x.png</file>
-		<file alias="manual3x.png">../manual/manual3x.png</file>
-		<file alias="manual4x.png">../manual/manual4x.png</file>
-		<file alias="manual5x.png">../manual/manual5x.png</file>
-		<file alias="manual6x.png">../manual/manual6x.png</file>
-		<file alias="manual7x.png">../manual/manual7x.png</file>
-		<file alias="manual8x.png">../manual/manual8x.png</file>
-		<file alias="manual.css">../manual/manual.css</file>
-		<file alias="manual2.html">../manual/manual2.html</file>
-		<file alias="manual3.html">../manual/manual3.html</file>
-	</qresource>
 </RCC>

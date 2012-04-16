@@ -21,7 +21,6 @@
 #define MAINWINDOW_H_
 
 #include "MotionLibrary.h"
-#include "HelpDialog.h"
 #include "MyTableView.h"
 
 #include <QPointer>
@@ -128,7 +127,5 @@ private:
     QPushButton * m_cancelPushButton;
 
     MotionLibrary * m_motionLibrary;
-
-    QPointer<HelpDialog> m_helpDialog;
 };
 #endif

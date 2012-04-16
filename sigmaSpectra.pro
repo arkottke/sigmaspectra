@@ -24,7 +24,6 @@ HEADERS += src/AbstractMotion.h \
     src/AxisOptionsGroupBox.h \
     src/ConfigurePlotDialog.h \
     src/ExportDialog.h \
-    src/HelpDialog.h \
     src/InputTableModel.h \
     src/MainWindow.h \
     src/Motion.h \
@@ -40,7 +39,6 @@ SOURCES += src/AbstractMotion.cpp \
     src/AxisOptionsGroupBox.cpp \
     src/ConfigurePlotDialog.cpp \
     src/ExportDialog.cpp \
-    src/HelpDialog.cpp \
     src/InputTableModel.cpp \
     src/main.cpp \
     src/MainWindow.cpp \
