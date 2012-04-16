@@ -729,4 +729,27 @@ each ground motion in the suite. Each suite is exported to a different file
 name, the prefix of which can be specified.
 
 \bibliography{references}
+
+\subsection{Ground Motion Format}
+
+SigmaSpectra was developed to use ground motions retrieved from the Pacific
+Earthquake Engineering Research (PEER) Center database. Motions not included in
+the PEER database can be considered if they are first transformed into the AT2
+format. The following guidelines must be followed:
+\begin{itemize}
+    \item The file extension must be ``AT2''. Note that the test on the file
+      extension is case sensitive so ``at2'' is not acceptable.
+    \item Header lines:
+      \begin{description}
+        \item[Line 1] Not used
+        \item[Line 2] Detailed description of the motion (optional).
+        \item[Line 3] Not used
+        \item[Line 4] Number of data points and time step separated by
+          whitespace (e.g., \texttt{2048 0.01})
+      \end{description}
+    \item Acceleration data format can be either single or multiple points per
+      line. Only the number of points specified in header line 4 is read. The
+      acceleration values must be specified in units of gravity.
+\end{itemize}
+
 \end{document}

@@ -44,7 +44,18 @@ Motion::~Motion()
 
 QString Motion::name() const
 {
-    return m_event + QDir::separator() + m_station + m_comp;
+    QString name;
+
+    if (m_event.isEmpty() || m_station.isEmpty() || m_comp.isEmpty()) {
+        // Create name from the filename
+        QFileInfo fileInfo(m_fileName);
+        name = fileInfo.dir().dirName() + QDir::separator() + fileInfo.fileName();
+    } else {
+        // Create name from parsed information
+        name = m_event + QDir::separator() + m_station + m_comp;
+    }
+
+    return name;
 }
 
 const QString & Motion::fileName() const
@@ -132,7 +143,7 @@ void Motion::scaleBy(const double factor)
 
 void Motion::processFile()
 {
-    QFileInfo fileInfo( m_fileName );
+    QFileInfo fileInfo(m_fileName);
 
     if(!fileInfo.isFile()) {
         qCritical("File is not found!");
@@ -153,6 +164,9 @@ void Motion::processFile()
         m_event = rx.cap(1);
         m_station = rx.cap(2);
         m_comp = rx.cap(3);
+    } else {
+
+
     }
 
     // Number of data points 
@@ -214,7 +228,6 @@ void Motion::processFile()
     }
 
     m_ariasInt = arias.last();
-
 
     // 
     // Compute the durations based on the arias intensity

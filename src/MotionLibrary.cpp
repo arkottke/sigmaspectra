@@ -711,6 +711,11 @@ bool MotionLibrary::compute()
         return false;
     }
 
+    if (!m_suites.size()) {
+        emit logText("No suites found!");
+        return false;
+    }
+
     // Sort the suites from smallest median mse to largest
     qSort(m_suites.begin(), m_suites.end(), lessThan);
 
@@ -718,6 +723,7 @@ bool MotionLibrary::compute()
     if (!m_okToContinue) {
         return false;
     }
+
     emit logText("Scaling suites");
 
     for (int i = 0; i < m_suites.size(); i++)  {
@@ -726,6 +732,7 @@ bool MotionLibrary::compute()
         // Update the log with the information
         emit logText(QString("[%1/%2] %3").arg(i+1).arg(m_suites.size()).arg(m_suites.at(i)->errorText()));
     }
+
     return true;
 }
 
@@ -923,7 +930,9 @@ bool MotionLibrary::selectSuites()
             return false;
         }
     } while(nextSeed());
+
     emit percentChanged(100);
+
     return true;
 }
 

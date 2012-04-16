@@ -25,7 +25,7 @@ void myMessageOutput(QtMsgType type, const char *msg)
 {
     switch (type) {
     case QtDebugMsg:
-        fprintf( stderr, "Debug: %s\n", msg );
+        fprintf(stderr, "Debug: %s\n", msg);
         /*
                         if ( logBox == 0 )
                                 logBox = new QTextEdit;
@@ -34,20 +34,20 @@ void myMessageOutput(QtMsgType type, const char *msg)
                         */
         break;
     case QtWarningMsg:
-        QMessageBox::warning( 0, "SigmaSpectra", msg );
+        QMessageBox::warning(0, "SigmaSpectra", msg);
         break;
     case QtCriticalMsg:
-        QMessageBox::critical( 0, "SigmaSpectra", msg );
+        QMessageBox::critical(0, "SigmaSpectra", msg);
         break;
     case QtFatalMsg:
-        QMessageBox::critical( 0, "SigmaSpectra", msg );
+        QMessageBox::critical(0, "SigmaSpectra", msg);
         //abort();
     }
 }
 
 int main( int argc, char* argv[] )
 {
-    qInstallMsgHandler(myMessageOutput);
+    //qInstallMsgHandler(myMessageOutput);
     
     QCoreApplication::setOrganizationName("Albert Kottke");
     QCoreApplication::setOrganizationDomain("accipter.org");
