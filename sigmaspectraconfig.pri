@@ -46,7 +46,7 @@ win32 {
         "C:/devel/fftw-3.2.2" \
         "C:/devel/qwt-6.0/src" \
         "C:/devel/GnuWin32/include"
-    RC_FILE = strata.rc
+    RC_FILE = sigmaSpectra.rc
     CONFIG(debug, debug|release ) {
         LIBS += -lqwtd \
             -L"C:/devel/qwt-6.0/lib"

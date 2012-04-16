@@ -1,4 +1,4 @@
-# All settings should be modified from the strataconfig.pri file
+# All settings should be modified from the sigmaSpectraConfig.pri file
 include(sigmaspectraconfig.pri)
 
 # Grab the revision number using svnversion and clean it up.

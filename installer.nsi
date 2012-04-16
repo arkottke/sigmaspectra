@@ -111,6 +111,7 @@ Section "!Core Files" SecProgram
   ;file "/oname=$INSTDIR\strata-output.ico" "resources\images\file-output.ico"
 
   ;Main libraries
+  file "C:\devel\qwt-6.0\lib\qwt.dll"
   file "C:\devel\GnuWin32\bin\libgsl.dll"
   file "C:\devel\GnuWin32\bin\libgslcblas.dll"
   file "C:\devel\fftw-3.2.2\libfftw3-3.dll"
@@ -120,7 +121,6 @@ Section "!Core Files" SecProgram
   file "${QT_PATH}\bin\QtGui4.dll"
   file "${QT_PATH}\bin\QtSvg4.dll"
   file "${QT_PATH}\bin\QtXml4.dll"
-  file "C:\devel\qwt-6.0\lib\qwt.dll"
   
   ;Plugins for SVG icons
   SetOutPath "$INSTDIR\iconengines" 

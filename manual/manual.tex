@@ -369,14 +369,16 @@ control during the selection process by allowing each motion to be to flagged as
 either \emph{Required}, \emph{Requested}, \emph{Unmarked} (the default state), or
 \emph{Disabled}. The flags are described as follows:
 \begin{description}
-  \item[Required] Suite must contain the motion.
-  \item[Requested] Suite must contain at least the number of \emph{Requested} motions
-	defined by the Minimum Number of Requested Motions Spin Box in the
-	Library of Motions Group (see \#10 in
-	Figure~\ref{fig:interface:libraryOfMotions}).
-  \item[Unmarked] No preference is given to the motion. This is the default
-	motion flag.
-  \item[Disable] Suite must not contain the motion.
+  \item[Required] \hfill \\
+    Suite must contain the motion.
+  \item[Requested] \hfill \\
+    Suite must contain at least the number of \emph{Requested} motions defined
+    by the Minimum Number of Requested Motions Spin Box in the Library of
+    Motions Group (see \#10 in Figure~\ref{fig:interface:libraryOfMotions}).
+  \item[Unmarked] \hfill \\
+    No preference is given to the motion. This is the default motion flag.
+  \item[Disable] \hfill \\
+    Suite must not contain the motion.
 \end{description}
 An example of when flagging motions may be useful is when the suite should
 contain a certain number of motions with directivity pulses.  The dialog is
@@ -585,16 +587,18 @@ here.
 
 Currently, SigmaSpectra only supports the processing of Next Generation
 Attenuation (NGA) times series which can be downloaded from
-\url{http://peer.berkeley.edu/nga/earthquakes.html}. The NGA database names
-files based on the \emph{recording station and component only}. Therefore, two
-time series from the same station and component have the same name for two
-different earthquakes. In part of the NGA data organization files are stored in
-directories corresponding to the earthquake event name. For example, recordings
-from the Northridge earthquake are all found in the \emph{NORTHR} folder. It is
-recommended that a similar convention be used for organizing files for use by
-SigmaSpectra. The NGA earthquake name can be found in URL for for the ground
-motion records. For example, link to download the 95$^\circ$ component recording
-at the \emph{Wonderland Ave} station for the Northridge earthquake is
+\url{http://peer.berkeley.edu/nga/earthquakes.html}. For information on
+converting ground to the PEER NGA West AT2 format see
+Section~\ref{sec:format}. The NGA database names files based on the
+\emph{recording station and component only}. Therefore, two time series from the
+same station and component have the same name for two different earthquakes. In
+part of the NGA data organization files are stored in directories corresponding
+to the earthquake event name. For example, recordings from the Northridge
+earthquake are all found in the \emph{NORTHR} folder. It is recommended that a
+similar convention be used for organizing files for use by SigmaSpectra. The NGA
+earthquake name can be found in URL for for the ground motion records. For
+example, link to download the 95$^\circ$ component recording at the
+\emph{Wonderland Ave} station for the Northridge earthquake is
 \emph{NORTHR/WON095} and the url:
 \url{http://peer.berkeley.edu/nga\_files/ath/NORTHR/WON095.AT2}. I would
 recommend saving the \emph{WON095.AT2} file to a directory named \emph{NORTHR}
@@ -728,17 +732,17 @@ is the comma-separated values format as it also includes the response spectra of
 each ground motion in the suite. Each suite is exported to a different file
 name, the prefix of which can be specified.
 
-\bibliography{references}
 
-\subsection{Ground Motion Format}
+\section{Ground Motion Format}
+\label{sec:format}
 
 SigmaSpectra was developed to use ground motions retrieved from the Pacific
 Earthquake Engineering Research (PEER) Center database. Motions not included in
 the PEER database can be considered if they are first transformed into the AT2
 format. The following guidelines must be followed:
 \begin{itemize}
-    \item The file extension must be ``AT2''. Note that the test on the file
-      extension is case sensitive so ``at2'' is not acceptable.
+  \item The file extension must be \texttt{AT2}. Note that the test on the file
+  extension is case sensitive so \texttt{at2} is not acceptable.
     \item Header lines:
       \begin{description}
         \item[Line 1] Not used
@@ -751,5 +755,7 @@ format. The following guidelines must be followed:
       line. Only the number of points specified in header line 4 is read. The
       acceleration values must be specified in units of gravity.
 \end{itemize}
+
+\bibliography{references}
 
 \end{document}

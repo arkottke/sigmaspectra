@@ -47,12 +47,11 @@ QString Motion::name() const
     QString name;
 
     if (m_event.isEmpty() || m_station.isEmpty() || m_comp.isEmpty()) {
-        // Create name from the filename
-        QFileInfo fileInfo(m_fileName);
-        name = fileInfo.dir().dirName() + QDir::separator() + fileInfo.fileName();
+        QFileInfo fi(m_fileName);
+        name = fi.dir().dirName() + QDir::separator() + fi.fileName();
     } else {
-        // Create name from parsed information
         name = m_event + QDir::separator() + m_station + m_comp;
+
     }
 
     return name;
