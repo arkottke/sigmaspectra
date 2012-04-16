@@ -13,7 +13,7 @@
 
 ;--------------------------------
 ; Path to Qt
-!Define QT_PATH "C:\devel\QtSDK\Desktop\Qt\4.7.4\mingw"
+!Define QT_PATH "C:\devel\QtSDK\Desktop\Qt\4.8.0\mingw"
 
 ;--------------------------------
 ;Variables
