@@ -53,8 +53,8 @@ MainWindow::MainWindow(QMainWindow * parent)
     connect(m_motionLibrary, SIGNAL(motionCountChanged(int)),
             this, SLOT(updateMotionCount(int)));
    
-    m_helpDialog = new HelpDialog(this);
-    m_helpDialog->setWindowModality(Qt::NonModal);
+    //m_helpDialog = new HelpDialog(this);
+    //m_helpDialog->setWindowModality(Qt::NonModal);
     
     // Setup up the mainwindow
     createActions();
@@ -85,7 +85,8 @@ void MainWindow::paste()
 
 void MainWindow::help()
 {
-    m_helpDialog->show();
+    QFileInfo fi(QDir::current(), "manual.pdf");
+    QDesktopServices::openUrl(QUrl(fi.absoluteFilePath()));
 }
 
 void MainWindow::about()
