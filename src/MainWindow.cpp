@@ -82,7 +82,7 @@ void MainWindow::paste()
 
 void MainWindow::help()
 {
-    QFileInfo fi(QDir::current(), "manual.pdf");
+    QFileInfo fi(QCoreApplication::applicationDirPath(), "manual.pdf");
     QDesktopServices::openUrl(QUrl(fi.absoluteFilePath()));
 }
 

@@ -107,8 +107,9 @@ Section "!Core Files" SecProgram
 
   ;Icons
   file "/oname=$INSTDIR\sigmaSpectra.ico" "resources\images\application-icon.ico"
-  ;file "/oname=$INSTDIR\strata-input.ico" "resources\images\file-input.ico"
-  ;file "/oname=$INSTDIR\strata-output.ico" "resources\images\file-output.ico"
+
+  ; The manual
+  file "manual\manual.pdf"
 
   ;Main libraries
   file "C:\devel\qwt-6.0\lib\qwt.dll"
@@ -135,19 +136,14 @@ Section "!Core Files" SecProgram
   WriteUninstaller "$INSTDIR\Uninstall.exe"
 
   !insertmacro MUI_STARTMENU_WRITE_BEGIN SigmaSpectra
-    ;Create shortcuts
+    ;Create shortcuts. Need to update the OutPath with the installation path
+    SetOutPath "$INSTDIR"
     CreateDirectory "$SMPROGRAMS\$STARTMENU_FOLDER"
     CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\SigmaSpectra.lnk" "$INSTDIR\SigmaSpectra.exe"
+    CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Manual.lnk" "$INSTDIR\manual.pdf"
     CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
   !insertmacro MUI_STARTMENU_WRITE_END
 
-SectionEnd
-
-Section "Manual" SecManual
-	SetOutPath "$INSTDIR"
-
-	;Files to install
-	file "manual\manual.pdf"
 SectionEnd
 
 Section /o "Example" SecExample
@@ -172,7 +168,6 @@ SectionEnd
 ;Descriptions
   ;Language strings
   LangString DESC_SecProgram ${LANG_ENGLISH} "Binaries required to run SigmaSpectra."
-  LangString DESC_SecManual ${LANG_ENGLISH} "A pdf version of the help manual. The program includes a help manual, but this version can be printed and therefore may be more convenient"
   LangString DESC_SecExample ${LANG_ENGLISH} "AT2 Files for the example presented in the help manual."
   LangString DESC_SecSource ${LANG_ENGLISH} "Source code."
 
@@ -180,7 +175,6 @@ SectionEnd
   ;Assign language strings to sections
   !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
     !insertmacro MUI_DESCRIPTION_TEXT ${SecProgram} $(DESC_SecProgram)
-    !insertmacro MUI_DESCRIPTION_TEXT ${SecManual} $(DESC_SecManual)
     !insertmacro MUI_DESCRIPTION_TEXT ${SecExample} $(DESC_SecExample)
     !insertmacro MUI_DESCRIPTION_TEXT ${SecSource} $(DESC_SecSource)
   !insertmacro MUI_FUNCTION_DESCRIPTION_END
