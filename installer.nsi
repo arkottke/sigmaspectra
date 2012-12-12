@@ -13,7 +13,8 @@
 
 ;--------------------------------
 ; Path to Qt
-!Define QT_PATH "C:\devel\QtSDK\Desktop\Qt\4.8.0\mingw"
+!Define QT_PATH "C:\devel\QtSDK\Desktop\Qt\4.8.1\mingw\"
+!Define QT_MINGW_PATH "C:\devel\QtSDK\mingw\bin\"
 
 ;--------------------------------
 ;Variables
@@ -115,13 +116,14 @@ Section "!Core Files" SecProgram
   file "C:\devel\qwt-6.0\lib\qwt.dll"
   file "C:\devel\GnuWin32\bin\libgsl.dll"
   file "C:\devel\GnuWin32\bin\libgslcblas.dll"
-  file "C:\devel\fftw-3.2.2\libfftw3-3.dll"
-  file "${QT_PATH}\bin\libgcc_s_dw2-1.dll"
-  file "${QT_PATH}\bin\mingwm10.dll"
+  file "C:\devel\fftw-3.3.2\libfftw3-3.dll"
   file "${QT_PATH}\bin\QtCore4.dll"
   file "${QT_PATH}\bin\QtGui4.dll"
   file "${QT_PATH}\bin\QtSvg4.dll"
   file "${QT_PATH}\bin\QtXml4.dll"
+  file "${QT_MINGW_PATH}\libstdc++-6.dll"
+  file "${QT_MINGW_PATH}\libgcc_s_dw2-1.dll"
+  file "${QT_MINGW_PATH}\mingwm10.dll"
   
   ;Plugins for SVG icons
   SetOutPath "$INSTDIR\iconengines" 
