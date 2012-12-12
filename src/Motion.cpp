@@ -215,7 +215,7 @@ void Motion::processFile()
     m_pgv = findMaxAbs(m_vel);
     
     m_disp = cumtrapz( m_vel, m_dt);
-    m_pgd = findMaxAbs(m_vel);
+    m_pgd = findMaxAbs(m_disp);
 
     // 
     // Compute the Arias intensity
