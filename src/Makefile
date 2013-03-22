@@ -13,6 +13,7 @@ all: Makefile.qmake
 
 install: all
 	make -f Makefile.qmake -C ../ install
+	install --mode 0755 -D ../release/sigmaspectra ../bin/
 
 clean: Makefile.qmake
 	make -f Makefile.qmake -C ../ clean

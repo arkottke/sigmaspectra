@@ -3,7 +3,7 @@
 /apps/share/invoke/invoke_app "$@" \
     -t sigmaspectra \
     -c filexfer \
-    -C @tool/bin/sigmaSpectra \
+    -C @tool/bin/sigmaspectra \
     -u qt-4.8.0 \
     -u qwt-6.0.0 \
     -w captive
