@@ -29,12 +29,14 @@ unix {
         -lfftw3 \
         -lgsl \
         -lgslcblas \
-        $$(LD_LIBRARY_PATH) \
+        -L$$(QT_LIB_PATH) \
+        -L$$(QWT_LIB_PATH) \
         -L"../qwt-6.0/lib/" \
         -lqwt
     INCLUDEPATH += . \
         ../qwt-6.0/src/ \
-        $$(CPATH)
+        $$(QT_INCLUDE_PATH) \
+        $$(QWT_INCLUDE_PATH)
 }
 # Windows
 win32 { 

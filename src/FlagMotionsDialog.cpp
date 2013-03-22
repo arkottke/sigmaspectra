@@ -204,7 +204,7 @@ FlagMotionsDialog::FlagMotionsDialog(QList<AbstractMotion*> & motions, QWidget *
         // Plots become too large vertically if not ignored
         plot->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Ignored);
 
-#if QWT_VERSION < 0x060001
+#if QWT_VERSION < 0x60000
         QwtPlotPicker * picker = new QwtPlotPicker(
                    QwtPlot::xBottom, QwtPlot::yLeft, QwtPicker::PointSelection,
                    QwtPicker::CrossRubberBand, QwtPicker::ActiveOnly, plot->canvas());
@@ -262,7 +262,7 @@ void FlagMotionsDialog::selectMotion(const QModelIndex & current, const QModelIn
         }
 
         // Set the data
-#if QWT_VERSION < 0x060001
+#if QWT_VERSION < 0x60000
         m_tsCurves[0 + j]->setData(m->time().data(), m->acc().data(), m->time().size());
         m_tsCurves[m_count*1 + j]->setData(m->time().data(), m->vel().data(), m->time().size());
         m_tsCurves[m_count*2 + j]->setData(m->time().data(), m->disp().data(), m->time().size());
