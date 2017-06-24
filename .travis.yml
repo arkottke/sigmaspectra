@@ -1,0 +1,29 @@
+sudo: required
+language: cpp
+dist: trusty
+
+before_install:
+    # https://launchpad.net/~beineri/+archive/ubuntu/opt-qt59
+    - sudo add-apt-repository --yes ppa:beineri/opt-qt59-trusty
+    - sudo apt-get update -qq
+
+install:
+    - sudo apt-get install -qq libgsl0-dev qt59base qt59tools qt59svg
+    - source /opt/qt59/bin/qt59-env.sh
+    - cd $TRAVIS_BUILD_DIR/..
+    - svn checkout svn://svn.code.sf.net/p/qwt/code/branches/qwt-6.1 qwt
+    - cd qwt
+    - qmake
+    - make -j2
+
+script:
+    - cd $TRAVIS_BUILD_DIR
+    - mkdir build
+    - cd build
+    - source /opt/qt59/bin/qt59-env.sh
+    # Add paths for libraries
+    - cmake .. -DQWT_ROOT_DIR=$TRAVIS_BUILD_DIR/qwt
+    - make -j2 release
+    - ./release/strata -b ../example/*.strata
+    - ./release/strata -b ../example/*.json
+    - cd ..
