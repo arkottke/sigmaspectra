@@ -23,8 +23,5 @@ script:
     - cd build
     - source /opt/qt59/bin/qt59-env.sh
     # Add paths for libraries
-    - cmake .. -DQWT_ROOT_DIR=$QWT_ROOT_DIR
-    - make -j2 release
-    - ./release/strata -b ../example/*.strata
-    - ./release/strata -b ../example/*.json
-    - cd ..
+    - cmake .. -DQWT_ROOT_DIR=$QWT_ROOT_DIR -DCMAKE_BUILD_TYPE=Release
+    - make -j2
