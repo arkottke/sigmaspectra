@@ -338,7 +338,7 @@ void Motion::fft(const QVector<double> &ts,
         n <<= 1;
     }
     // Load the buffer with the initial values
-    double buf[n] = {};
+    double buf[n] = { 0. };
     // Load the data
     memcpy(&buf, ts.data(), ts.size() * sizeof(double));
 
