@@ -338,10 +338,14 @@ void Motion::fft(const QVector<double> &ts,
         n <<= 1;
     }
     // Load the buffer with the initial values
-    double buf[n] = { 0. };
-    // Load the data
-    memcpy(&buf, ts.data(), ts.size() * sizeof(double));
-
+    double buf[n];
+    for (int i = 0; i < n; ++i) {
+        if (i < ts.size()) {
+            buf[i] = ts.at(i);
+        } else {
+            buf[i] = 0;
+        }
+    }
     // Execute FFT
     gsl_fft_real_radix2_transform(buf, 1, n);
 
