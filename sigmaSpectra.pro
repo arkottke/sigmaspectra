@@ -1,24 +1,63 @@
-# All settings should be modified from the sigmaSpectraConfig.pri file
-include(sigmaspectraconfig.pri)
-
-# Grab the revision number using svnversion and clean it up.
-DEFINES += REVISION=$$system(python getSvnVersion.py)
-
-# Flag based on if the program is compiled in debug mode. 
-CONFIG(debug, debug|release) {
-   DEFINES += DEBUG
-}
-
-# Directories for building
-CONFIG(debug, debug|release) {
-   DESTDIR = debug
-} else {
-   DESTDIR = release
-}
+########################################################################
+# SigmaSpectra
+# Copyright (C) 2011-16   Albert R. Kottke
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GPL License, Version 3.0
+########################################################################
 
 TEMPLATE = app
 TARGET = sigmaspectra
-QT += xml
+QT += gui widgets xml core
+
+# Version information
+VER_MAJ = 0
+VER_MIN = 5
+VER_PAT = 5
+GIT_VER = $$system(git rev-parse --short HEAD)
+DEFINES += "VERSION=\\\"$${VER_MAJ}.$${VER_MIN}.$${VER_PAT}-$${GIT_VER}\\\""
+
+# Load configuration from sigmaSpectraConfig.pri if it exists
+include(sigmaSpectraConfig.pri)
+
+# Required libraries for linking.
+LIBS += $$(LIBS) -lgsl -lgslcblas
+
+win32:debug {
+    LIBS += -lqwtd
+} else {
+    LIBS += -lqwt
+}
+
+# Build type. For most cases this should be release, however during
+# development of the software using the debug configuration can be
+# beneficial.
+#
+# This can be specified at build time with, such as::
+#   $> make release
+CONFIG += debug_and_release
+
+# Add warning messages and support for c++14
+CONFIG += c++14 warn_on
+
+# Configuration for release and debug versions
+CONFIG(debug, debug|release) {
+    # Enable console for debug versions
+    CONFIG += console
+    # Flag based on if the program is compiled in debug mode.
+    DEFINES += DEBUG
+    # Build to debug
+    DESTDIR = debug
+} else {
+    # Build to release
+    DESTDIR = release
+}
+
+# Add the icon for windows binaries
+win32 {
+    RC_FILE = sigmaSpectra.rc
+}
+
 
 HEADERS += src/AbstractMotion.h \
     src/AxisOptionsGroupBox.h \
