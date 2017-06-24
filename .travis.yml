@@ -13,7 +13,7 @@ install:
     - cd $TRAVIS_BUILD_DIR/..
     - svn checkout svn://svn.code.sf.net/p/qwt/code/branches/qwt-6.1 qwt
     - cd qwt
-    - QWT_ROOT_DIR=`cwd`
+    - QWT_ROOT_DIR=`pwd`
     - qmake
     - make -j2
 
