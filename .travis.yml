@@ -13,6 +13,7 @@ install:
     - cd $TRAVIS_BUILD_DIR/..
     - svn checkout svn://svn.code.sf.net/p/qwt/code/branches/qwt-6.1 qwt
     - cd qwt
+    - QWT_ROOT_DIR=`cwd`
     - qmake
     - make -j2
 
@@ -22,7 +23,7 @@ script:
     - cd build
     - source /opt/qt59/bin/qt59-env.sh
     # Add paths for libraries
-    - cmake .. -DQWT_ROOT_DIR=$TRAVIS_BUILD_DIR/qwt
+    - cmake .. -DQWT_ROOT_DIR=$QWT_ROOT_DIR
     - make -j2 release
     - ./release/strata -b ../example/*.strata
     - ./release/strata -b ../example/*.json
