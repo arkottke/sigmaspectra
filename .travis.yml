@@ -2,6 +2,11 @@ sudo: required
 language: cpp
 dist: trusty
 
+branches:
+    except:
+        - /^appveyor.*$/
+
+
 before_install:
     # https://launchpad.net/~beineri/+archive/ubuntu/opt-qt59
     - sudo add-apt-repository --yes ppa:beineri/opt-qt59-trusty
@@ -22,6 +27,6 @@ script:
     - mkdir build
     - cd build
     - source /opt/qt59/bin/qt59-env.sh
-    # Add paths for libraries
+      # Add paths for libraries
     - cmake .. -DQWT_ROOT_DIR=$QWT_ROOT_DIR -DCMAKE_BUILD_TYPE=Release
     - make -j2

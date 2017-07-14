@@ -1,33 +1,45 @@
-# version format
 version: '{build}'
 
+branches:
+    except:
+        - /^travis.*$/
+
+    init:
+        - git config --global core.autocrlf input
+        - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
+shallow_clone: true
+
+# https://www.appveyor.com/docs/build-environment/#build-worker-images
+image: Visual Studio 2015
+
 environment:
-  VisualStudioVersion: 14.0
   fast_finish: true
   matrix:
-#  - ARCH: "i686"
-  - ARCH: "x86_64"
-
-os: Visual Studio 2015
+      - CMAKE_GENERATOR: "Visual Studio 14 2015"
+        QT5: C:\Qt\5.9\msvc2015
+        #       - CMAKE_GENERATOR: "Visual Studio 14 2015 Win64"
+        #         QT5: C:\Qt\5.8\msvc2015_64
 
 configuration: Release
     
 # Configure git linebreaks
-init:
-  - git config --global core.autocrlf input
-  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-
 cache:
-  - c:\projects\gsl -> appveyor.yml
-  - c:\projects\qwt -> appveyor.yml
-  
+    - c:\projects\gsl -> appveyor.yml
+    - c:\projects\qwt -> appveyor.yml
+
 install:
-    # Install GSL
-  - cd c:\projects
-  - git clone --depth=1 https://github.com/ampl/gsl.git gsl
-  - pushd gsl && cmake . & popd
-    # Install Qwt
-  - svn export svn://svn.code.sf.net/p/qwt/code/branches/qwt-6.1 qwt
+    - set PATH=%QT5%\bin;%PATH%
+    - cd c:\projects
+      # Install GSL
+    - git clone --depth=1 https://github.com/ampl/gsl.git gsl
+    - mkdir gsl\build
+    - pushd gsl\build
+    - cmake -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_BUILD_TYPE="Release" .
+    - msbuild gsl.sln /p:Configuration=Release /m
+    - popd
+      # Install Qwt
+    - svn export svn://svn.code.sf.net/p/qwt/code/branches/qwt-6.1 qwt
 
 deploy:
     description: 'Release description'
@@ -42,4 +54,4 @@ deploy:
         appveyor_repo_tag: true        # deploy on tag push only
 
 on_finish:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+    - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
