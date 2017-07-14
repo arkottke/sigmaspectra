@@ -45,7 +45,7 @@ install:
       # Install GSL
     - git clone https://github.com/ampl/gsl.git
     - cd gsl
-    - cmake -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_BUILD_TYPE="Release" -G "%GENERATOR%" .
+    - cmake -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_BUILD_TYPE="Release" -G "%CMAKE_GENERATOR%" .
     - mingw32-make -j2 install
     - set GSL_ROOT_DIR="%ProgramFiles(x86)%\GSL"
     - cd ..
@@ -60,7 +60,7 @@ install:
 build_script:
     - mkdir sigmaspectra\build
     - cd sigmaspectra\build
-    - cmake -DGSL_ROOT_DIR=%GSL_ROOT_DIR% -DQWT_ROOT_DIR=%QWT_ROOT_DIR% -G "%GENERATOR%" ..
+    - cmake -DGSL_ROOT_DIR=%GSL_ROOT_DIR% -DQWT_ROOT_DIR=%QWT_ROOT_DIR% -G "%CMAKE_GENERATOR%" ..
     - mingw32-make -j2 release
 
 deploy:
