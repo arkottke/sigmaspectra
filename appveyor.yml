@@ -28,6 +28,7 @@ configuration: Release
 cache:
     - c:\projects\gsl -> appveyor.yml
     - c:\projects\qwt -> appveyor.yml
+    - c:\Program Files (x86)\GSL -> appveyor.yml
 
 install:
     - set PATH=%QT5%\bin;%PATH%
@@ -35,20 +36,21 @@ install:
     - cd c:\projects
       # Install GSL
     - git clone https://github.com/ampl/gsl.git
-    - pushd gsl
-    - cmake -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_BUILD_TYPE="Release" -DGSL_INSTALL:BOOL=ON .
+    - cd gsl
+      # - cmake -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_BUILD_TYPE="Release" -DGSL_INSTALL:BOOL=ON .
+    - cmake -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_BUILD_TYPE="Release" .
     - msbuild INSTALL.vcxproj /p:Configuration=Release /m
-    - popd
+    - cd ..
       # Install Qwt
     - svn export svn://svn.code.sf.net/p/qwt/code/branches/qwt-6.1 qwt
-    - pushd qwt
+    - cd qwt
     - qmake & nmake
     - set QWT_ROOT_DIR=%cd%
-    - popd
+    - cd ..
 
 build_script:
     - mkdir sigmaspectra\build
-    - pushd sigmaspectra\build
+    - cd sigmaspectra\build
     - cmake .. -DGSL_INSTALL "%ProgramFiles(x86)%\GSL"  -DQWT_ROOT_DIR=%QWT_ROOT_DIR%
 
 deploy:
