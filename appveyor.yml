@@ -53,7 +53,7 @@ install:
     - svn export svn://svn.code.sf.net/p/qwt/code/branches/qwt-6.1 qwt
     - cd qwt
     - qmake
-    - mingw32-make -j2 release
+    - mingw32-make -j2
     - set QWT_ROOT_DIR=%cd%
     - cd ..
 
