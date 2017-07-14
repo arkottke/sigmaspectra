@@ -1,43 +1,32 @@
 # version format
 version: '{build}'
 
-platform: x64
 environment:
+  VisualStudioVersion: 14.0
   fast_finish: true
   matrix:
 #  - ARCH: "i686"
   - ARCH: "x86_64"
+
+os: Visual Studio 2015
 
 configuration: Release
     
 # Configure git linebreaks
 init:
   - git config --global core.autocrlf input
+
+cache:
+  - c:\projects\gsl -> appveyor.yml
+  - c:\projects\qwt -> appveyor.yml
   
-# Install dependencies
 install:
-  - set PATH=C:\msys64\usr\bin;%PATH%
-  - pacman -S --noconfirm --quiet pacman-mirrors
-  - pacman -Syu --noconfirm --quiet 
-  # Need to re-run Syu after update
-  - pacman -Syu --noconfirm --quiet 
-  - pacman -S --noconfirm --quiet mingw-w64-%ARCH%-qwt-qt5 mingw-w64-%ARCH%-gsl mingw-w64-%ARCH%-qt5
-
-build_script:
-  - C:\msys64\usr\bin\sh --login /c/projects/sigmaspectra/scripts/build_msys.sh
-
-artifacts:
-    - path: SigmaSpectra-mingw64-*.exe
-      name: SigmaSpectra Installer (64-bit)
-
-    - path: SigmaSpectra-mingw64-*.zip
-      name: SigmaSpectra Archive (64-bit)
-
-    - path: SigmaSpectra-mingw32-*.exe
-      name: SigmaSpectra Installer (32-bit)
-
-    - path: SigmaSpectra-mingw32-*.zip
-      name: SigmaSpectra Archive (32-bit)
+    # Install GSL
+  - cd c:\projects
+  - git clone --depth=1 https://github.com/ampl/gsl.git gsl
+  - pushd gsl && cmake . & popd
+    # Install Qwt
+  - svn export svn://svn.code.sf.net/p/qwt/code/branches/qwt-6.1 qwt
 
 deploy:
     description: 'Release description'
@@ -50,3 +39,6 @@ deploy:
         # branch: /v\d+\.\d+\.\d+/       # Match against the version tag
         branch: master
         appveyor_repo_tag: true        # deploy on tag push only
+
+on_finish:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
