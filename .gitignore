@@ -38,3 +38,6 @@ Makefile*
 CMakeLists.txt.user*
 
 /build/
+
+# Vim swap files
+*.swp
