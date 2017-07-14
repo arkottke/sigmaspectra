@@ -44,7 +44,7 @@ install:
     - cd c:\projects
       # Install GSL
     - git clone https://github.com/ampl/gsl.git
-    - cd git
+    - cd gsl
     - cmake -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_BUILD_TYPE="Release" -G "%GENERATOR%" .
     - mingw32-make -j2 install
     - set GSL_ROOT_DIR="%ProgramFiles(x86)%\GSL"
