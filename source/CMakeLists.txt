@@ -56,5 +56,5 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 if (UNIX)
     install(TARGETS ${CMAKE_PROJECT_NAME} RUNTIME DESTINATION bin)
 elseif(WIN32)
-    install(TARGETS ${CMAKE_PROJECT_NAME} DESTINATION.)
+    install(TARGETS ${CMAKE_PROJECT_NAME} DESTINATION .)
 endif()
