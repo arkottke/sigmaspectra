@@ -16,11 +16,9 @@ image: Visual Studio 2015
 environment:
     fast_finish: true
     matrix:
-        - CMAKE_GENERATOR: "Visual Studio 14 2015"
-          QT5: C:\Qt\5.9\msvc2015
+        - CMAKE_GENERATOR: "MinGW Makefiles"
+          QT5: C:\Qt\5.9\mingw53_32
           ARCH: x86
-          #       - CMAKE_GENERATOR: "Visual Studio 14 2015 Win64"
-          #         QT5: C:\Qt\5.8\msvc2015_64
 
 configuration: Release
     
@@ -31,27 +29,39 @@ cache:
     - c:\Program Files (x86)\GSL -> appveyor.yml
 
 install:
-    - set PATH=%QT5%\bin;%PATH%
-    - call "%ProgramFiles(x86)%\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" %ARCH%
+    # Remove sh.exe from the path otherwise CMake will complain:
+    # "sh.exe was found in your PATH, here: C:/Program Files/Git/usr/bin/sh.exe"
+    # and the MinGW build will not work (the Visual Studio build does not care).
+    # See http://help.appveyor.com/discussions/problems/3193-cmake-building-for-mingw-issue-with-git-shexe
+    # The entire directory containing sh.exe could be removed from the PATH environment:
+    # - set PATH=%PATH:C:\Program Files\Git\usr\bin;=%
+    # However, this will also remove all other programs in this directory from the PATH.
+    # In particular "patch" is still required.
+    # So, just rename sh.exe:
+    - ren "C:\Program Files\Git\usr\bin\sh.exe" _sh.exe
+    # Add Qt, MinGW, and WiX to PATH
+    - set PATH=%QT5%\bin;C:\MinGW\bin;C:\Program Files (x86)\WiX Toolset v3.11\bin;%PATH%
     - cd c:\projects
       # Install GSL
     - git clone https://github.com/ampl/gsl.git
-    - cd gsl
-      # - cmake -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_BUILD_TYPE="Release" -DGSL_INSTALL:BOOL=ON .
-    - cmake -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_BUILD_TYPE="Release" .
-    - msbuild INSTALL.vcxproj /p:Configuration=Release /m
+    - cd git
+    - cmake -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_BUILD_TYPE="Release" -G "%GENERATOR%" .
+    - mingw32-make -j2 install
+    - set GSL_ROOT_DIR="%ProgramFiles(x86)%\GSL"
     - cd ..
       # Install Qwt
     - svn export svn://svn.code.sf.net/p/qwt/code/branches/qwt-6.1 qwt
     - cd qwt
-    - qmake & nmake
+    - qmake
+    - mingw32-make -j2 release
     - set QWT_ROOT_DIR=%cd%
     - cd ..
 
 build_script:
     - mkdir sigmaspectra\build
     - cd sigmaspectra\build
-    - cmake .. -DGSL_INSTALL "%ProgramFiles(x86)%\GSL"  -DQWT_ROOT_DIR=%QWT_ROOT_DIR%
+    - cmake -DGSL_ROOT_DIR=%GSL_ROOT_DIR% -DQWT_ROOT_DIR=%QWT_ROOT_DIR% -G "%GENERATOR%" ..
+    - mingw32-make -j2 release
 
 deploy:
     description: 'Release description'
