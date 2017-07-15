@@ -36,7 +36,6 @@ else()
   install(FILES
     ${MINGW_DLL_DIR}/libgcc_s_dw2-1.dll
     ${MINGW_DLL_DIR}/libstdc++-6.dll
-    # ${QT_DLL_DIR}/libwinpthread-1.dll
     DESTINATION .
   )
 endif()
@@ -44,7 +43,9 @@ endif()
 # Qt Libraries
 get_target_property(QtCore_LOCATION Qt5::Core LOCATION)
 get_filename_component(QT_DLL_DIR ${QtCore_LOCATION} PATH)
+get_filename_component(QWT_DLL_DIR ${QWT_LIBRARY} PATH)
 install(FILES
+  ${QT_DLL_DIR}/libwinpthread-1.dll
   ${QT_DLL_DIR}/Qt5Core.dll
   ${QT_DLL_DIR}/Qt5Gui.dll
   ${QT_DLL_DIR}/Qt5OpenGL.dll
@@ -52,7 +53,7 @@ install(FILES
   ${QT_DLL_DIR}/Qt5Svg.dll
   ${QT_DLL_DIR}/Qt5Widgets.dll
   ${QT_DLL_DIR}/Qt5Xml.dll
-  ${QWT_LIBRARY}/qwt.dll
+  ${QWT_DLL_DIR}/qwt.dll
   ${CMAKE_SOURCE_DIR}/win/qt.conf
   DESTINATION .
 )
