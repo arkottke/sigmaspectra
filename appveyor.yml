@@ -6,7 +6,6 @@ branches:
 
 init:
     - git config --global core.autocrlf input
-    - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 clone_depth: 1
 
@@ -24,6 +23,8 @@ configuration: Release
     
 # Configure git linebreaks
 cache:
+    # - c:\projects\gsl -> appveyor.yml
+    # - c:\projects\qwt -> appveyor.yml
     - c:\projects\gsl -> appveyor.yml
     - c:\projects\qwt -> appveyor.yml
 
@@ -59,6 +60,14 @@ build_script:
     - CD sigmaspectra\build
     - cmake -DGSL_ROOT_DIR=%GSL_ROOT_DIR% -DQWT_ROOT_DIR=%QWT_ROOT_DIR% -G "%CMAKE_GENERATOR%" ..
     - mingw32-make -j2 install
+    - cd dist
+    - 7z a ../SigmaSpectra-v%VERSION%.zip *
+    - cd ..
+    - mingw32-make -j2 installer
+
+artifacts:
+    - path: build\SigmaSpectra-*.zip
+      name: Zip Archive
 
 deploy:
     description: 'Release description'
