@@ -100,7 +100,7 @@
       <ComponentRef Id="qt.conf"/>
       <ComponentGroupRef Id="RuntimeDlls"/>
       <ComponentGroupRef Id="QtDlls"/>
-      <ComponentGroupRef Id="IcuDlls"/>
+      <ComponentGroupRef Id="QwtDll"/>
       <ComponentGroupRef Id="PlatformPlugins"/>
       <ComponentRef Id="ProductMenuDir"/>
     </Feature>
