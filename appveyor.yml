@@ -61,7 +61,7 @@ build_script:
     - mkdir sigmaspectra\build
     - cd sigmaspectra\build
     - cmake -DGSL_ROOT_DIR=%GSL_ROOT_DIR% -DQWT_ROOT_DIR=%QWT_ROOT_DIR% -G "%CMAKE_GENERATOR%" ..
-    - mingw32-make -j2 release
+    - mingw32-make -j2 
 
 deploy:
     description: 'Release description'
