@@ -33,9 +33,9 @@ set(PROJECT_LONGNAME "SigmaSpectra")
 
 execute_process(
     COMMAND git rev-parse --short HEAD 
-    OUTPUT_VARIABLE GITHASH
+    OUTPUT_VARIABLE PROJECT_GITHASH
     OUTPUT_STRIP_TRAILING_WHITESPACE)
-set(PROJECT_VERSION "1.0.0-${GITHASH}")
+set(PROJECT_VERSION "1.0.0")
 
 # Global CMake options
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -50,7 +50,6 @@ find_package(Qt5Xml REQUIRED)
 find_package(GSL REQUIRED)
 find_package(Qwt REQUIRED)
 
-message(${QWT_INCLUDE_DIRS})
 include_directories(${GSL_INCLUDE_DIRS} ${QWT_INCLUDE_DIRS})
 set(LIBS ${LIBS} ${GSL_LIBRARIES} ${QWT_LIBRARIES})
 

@@ -34,9 +34,9 @@ else()
   # MinGW
   get_filename_component(MINGW_DLL_DIR ${CMAKE_CXX_COMPILER} PATH)
   install(FILES
-    ${MINGW_DLL_DIR}/libgcc_s_dw2-1.dll
-    ${MINGW_DLL_DIR}/libstdc++-6.dll
-    ${MINGW_DLL_DIR}/libwinpthread-1.dll
+    ${QT_DLL_DIR}/libgcc_s_dw2-1.dll
+    ${QT_DLL_DIR}/libstdc++-6.dll
+    ${QT_DLL_DIR}/libwinpthread-1.dll
     DESTINATION .
   )
 endif()
@@ -45,12 +45,14 @@ endif()
 get_target_property(QtCore_LOCATION Qt5::Core LOCATION)
 get_filename_component(QT_DLL_DIR ${QtCore_LOCATION} PATH)
 install(FILES
-  ${QT_DLL_DIR}/icudt51.dll
-  ${QT_DLL_DIR}/icuin51.dll
-  ${QT_DLL_DIR}/icuuc51.dll
+  ${QWT_DLL_DIR}/qwt.dll
   ${QT_DLL_DIR}/Qt5Core.dll
   ${QT_DLL_DIR}/Qt5Gui.dll
+  ${QT_DLL_DIR}/Qt5OpenGL.dll
+  ${QT_DLL_DIR}/Qt5PrintSupport.dll
+  ${QT_DLL_DIR}/Qt5Svg.dll
   ${QT_DLL_DIR}/Qt5Widgets.dll
+  ${QT_DLL_DIR}/Qt5Xml.dll
   ${CMAKE_SOURCE_DIR}/win/qt.conf
   DESTINATION .
 )

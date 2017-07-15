@@ -22,6 +22,7 @@
 namespace {
 const char* PROJECT_LONGNAME = "@PROJECT_LONGNAME@";
 const char* PROJECT_VERSION = "@PROJECT_VERSION@";
+const char* PROJECT_GITHASH = "@PROJECT_GITHASH@";
 }
 
 #endif

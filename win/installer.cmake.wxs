@@ -47,10 +47,13 @@
     <!-- Runtime DLLs -->
     <ComponentGroup Id="RuntimeDlls" Directory="INSTALLDIR">
       <Component Guid="*">
-        <File Name="msvcp100.dll" KeyPath="yes"/>
+        <File Name="libgcc_s_dw2-1.dll" KeyPath="yes"/>
       </Component>
       <Component Guid="*">
-        <File Name="msvcr100.dll" KeyPath="yes"/>
+        <File Name="libstdc++-6.dll" KeyPath="yes"/>
+      </Component>
+      <Component Guid="*">
+        <File Name="libwinpthread-1.dll" KeyPath="yes"/>
       </Component>
     </ComponentGroup>
     <!-- Qt DLLs -->
@@ -62,19 +65,25 @@
         <File Name="Qt5Gui.dll" KeyPath="yes"/>
       </Component>
       <Component Guid="*">
+        <File Name="Qt5OpenGL.dll" KeyPath="yes"/>
+      </Component>
+      <Component Guid="*">
+        <File Name="Qt5PrintSupport.dll" KeyPath="yes"/>
+      </Component>
+      <Component Guid="*">
+        <File Name="Qt5Svg.dll" KeyPath="yes"/>
+      </Component>
+      <Component Guid="*">
         <File Name="Qt5Widgets.dll" KeyPath="yes"/>
       </Component>
+      <Component Guid="*">
+        <File Name="Qt5Xml.dll" KeyPath="yes"/>
+      </Component>
     </ComponentGroup>
-    <!-- ICU DLLs for Qt -->
-    <ComponentGroup Id="IcuDlls" Directory="INSTALLDIR">
+    <!-- Qwt DLL -->
+    <ComponentGroup Id="QwtDll" Directory="INSTALLDIR">
       <Component Guid="*">
-        <File Name="icuuc51.dll" KeyPath="yes"/>
-      </Component>
-      <Component Guid="*">
-        <File Name="icudt51.dll" KeyPath="yes"/>
-      </Component>
-      <Component Guid="*">
-        <File Name="icuin51.dll" KeyPath="yes"/>
+        <File Name="qwt.dll" KeyPath="yes"/>
       </Component>
     </ComponentGroup>
     <!-- Platform Plugins -->
@@ -117,6 +126,6 @@
     <WixVariable Id="WixUIBannerBmp" Value="installer-header.bmp"/>  Size: 493x58
     <WixVariable Id="WixUIDialogBmp" Value="installer-welcome.bmp"/> Size: 493x312
     -->
-    <WixVariable Id="WixUILicenseRtf" Value="..\Licence.rtf"/>
+    <WixVariable Id="WixUILicenseRtf" Value="..\LICENSE.txt"/>
   </Product>
 </Wix>

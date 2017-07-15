@@ -26,7 +26,6 @@ configuration: Release
 cache:
     - c:\projects\gsl -> appveyor.yml
     - c:\projects\qwt -> appveyor.yml
-    - c:\Program Files (x86)\GSL -> appveyor.yml
 
 install:
     # Remove sh.exe from the path otherwise CMake will complain:
@@ -38,28 +37,28 @@ install:
     # However, this will also remove all other programs in this directory from the PATH.
     # In particular "patch" is still required.
     # So, just rename sh.exe:
-    - ren "C:\Program Files\Git\usr\bin\sh.exe" _sh.exe
+    - REN "C:\Program Files\Git\usr\bin\sh.exe" _sh.exe
     # Add Qt, MinGW, and WiX to PATH
-    - set PATH=%QT5%\bin;C:\MinGW\bin;C:\Program Files (x86)\WiX Toolset v3.11\bin;%PATH%
-    - cd c:\projects
+    - SET PATH=%QT5%\bin;C:\MinGW\bin;C:\Program Files (x86)\WiX Toolset v3.11\bin;%PATH%
+    - CD c:\projects
       # Install GSL
-    - IF EXIST gsl (pushd gsl & git pull) ELSE (git clone https://github.com/ampl/gsl.git & PUSHD gsl)
+    - IF EXIST gsl (CD gsl & git pull) ELSE (git clone https://github.com/ampl/gsl.git & CD gsl)
     - cmake -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_BUILD_TYPE="Release" -G "%CMAKE_GENERATOR%" .
     - mingw32-make -j2 install
     - SET GSL_ROOT_DIR="%ProgramFiles(x86)%\GSL"
-    - POPD
+    - CD ..
       # Install Qwt
-    - IF EXIST qwt (pushd qwt & svn update) ELSE (svn export svn://svn.code.sf.net/p/qwt/code/branches/qwt-6.1 qwt & PUSHD qwt)
+    - IF EXIST qwt (CD qwt & svn update) ELSE (svn co -r HEAD svn://svn.code.sf.net/p/qwt/code/branches/qwt-6.1 qwt & CD qwt)
     - qmake
     - mingw32-make -j2
-    - set QWT_ROOT_DIR=%cd%
-    - POPD
+    - set QWT_ROOT_DIR=%CD%
+    - CD ..
 
 build_script:
-    - mkdir sigmaspectra\build
-    - PUSHD sigmaspectra\build
+    - MKDIR sigmaspectra\build
+    - CD sigmaspectra\build
     - cmake -DGSL_ROOT_DIR=%GSL_ROOT_DIR% -DQWT_ROOT_DIR=%QWT_ROOT_DIR% -G "%CMAKE_GENERATOR%" ..
-    - mingw32-make -j2 
+    - mingw32-make -j2 install
 
 deploy:
     description: 'Release description'
