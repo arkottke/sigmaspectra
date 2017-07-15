@@ -43,23 +43,21 @@ install:
     - set PATH=%QT5%\bin;C:\MinGW\bin;C:\Program Files (x86)\WiX Toolset v3.11\bin;%PATH%
     - cd c:\projects
       # Install GSL
-    - git clone https://github.com/ampl/gsl.git
-    - cd gsl
+    - IF EXIST gsl (pushd gsl & git pull) ELSE (git clone https://github.com/ampl/gsl.git & PUSHD gsl)
     - cmake -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_BUILD_TYPE="Release" -G "%CMAKE_GENERATOR%" .
     - mingw32-make -j2 install
-    - set GSL_ROOT_DIR="%ProgramFiles(x86)%\GSL"
-    - cd ..
+    - SET GSL_ROOT_DIR="%ProgramFiles(x86)%\GSL"
+    - POPD
       # Install Qwt
-    - svn export svn://svn.code.sf.net/p/qwt/code/branches/qwt-6.1 qwt
-    - cd qwt
+    - IF EXIST qwt (pushd qwt & svn update) ELSE (svn export svn://svn.code.sf.net/p/qwt/code/branches/qwt-6.1 qwt & PUSHD qwt)
     - qmake
     - mingw32-make -j2
     - set QWT_ROOT_DIR=%cd%
-    - cd ..
+    - POPD
 
 build_script:
     - mkdir sigmaspectra\build
-    - cd sigmaspectra\build
+    - PUSHD sigmaspectra\build
     - cmake -DGSL_ROOT_DIR=%GSL_ROOT_DIR% -DQWT_ROOT_DIR=%QWT_ROOT_DIR% -G "%CMAKE_GENERATOR%" ..
     - mingw32-make -j2 
 
