@@ -23,8 +23,6 @@ configuration: Release
     
 # Configure git linebreaks
 cache:
-    # - c:\projects\gsl -> appveyor.yml
-    # - c:\projects\qwt -> appveyor.yml
     - c:\projects\gsl -> appveyor.yml
     - c:\projects\qwt -> appveyor.yml
 
@@ -61,13 +59,16 @@ build_script:
     - cmake -DGSL_ROOT_DIR=%GSL_ROOT_DIR% -DQWT_ROOT_DIR=%QWT_ROOT_DIR% -G "%CMAKE_GENERATOR%" ..
     - mingw32-make -j2 install
     - cd dist
-    - 7z a ../SigmaSpectra-v%VERSION%.zip *
+    - 7z a ../SigmaSpectra-v$(version).zip *
     - cd ..
     - mingw32-make -j2 installer
 
 artifacts:
     - path: build\SigmaSpectra-*.zip
       name: Zip Archive
+
+    - path: build\SigmaSpectra-*.msi
+      name: Installer
 
 deploy:
     description: 'Release description'
