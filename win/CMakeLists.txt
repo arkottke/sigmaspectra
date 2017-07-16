@@ -94,7 +94,7 @@ if (WIX_PATH)
 endif()
 
 if (7Z_PATH)
-    add_custom_target(installer
+    add_custom_target(archive
         COMMAND 7z a ${CMAKE_CURRENT_BINARY_DIR}/SigmaSpectra-v${PROJECT_VERSION}-${PROJECT_GITHASH}.zip *
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         DEPENDS install
