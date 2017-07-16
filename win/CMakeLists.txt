@@ -88,7 +88,6 @@ if (WIX_PATH)
         -out "${PROJECT_LONGNAME}-v${PROJECT_VERSION}-${PROJECT_GITHASH}.msi"
         installer.wixobj
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-        DEPENDS install
         VERBATIM
         )
 endif()
@@ -97,7 +96,6 @@ if (7Z_PATH)
     add_custom_target(archive
         COMMAND 7z a ${CMAKE_CURRENT_BINARY_DIR}/SigmaSpectra-v${PROJECT_VERSION}-${PROJECT_GITHASH}.zip *
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-        DEPENDS install
         VERBATIM
         )
 endif()
