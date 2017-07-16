@@ -93,6 +93,10 @@ if (WIX_PATH)
 endif()
 
 if (7Z_PATH)
+    message(${CMAKE_BINARY_DIR})
+    message(${CMAKE_SOURCE_DIR})
+    message(${CMAKE_CURRENT_BINARY_DIR})
+    message(${CMAKE_CURRENT_SOURCE_DIR})
     add_custom_target(archive
         COMMAND 7z a ../SigmaSpectra-v${PROJECT_VERSION}-${PROJECT_GITHASH}.zip *
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
