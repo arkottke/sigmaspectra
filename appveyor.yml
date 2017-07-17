@@ -16,8 +16,8 @@ environment:
     fast_finish: true
     matrix:
         - CMAKE_GENERATOR: "MinGW Makefiles"
+          MINGW: C:\Qt\Tools\mingw530_32\bin
           QT5: C:\Qt\5.9\mingw53_32
-          ARCH: x86
 
 configuration: Release
     
@@ -38,12 +38,12 @@ install:
     # So, just rename sh.exe:
     - REN "C:\Program Files\Git\usr\bin\sh.exe" _sh.exe
     # Add Qt, MinGW, and WiX to PATH
-    - SET PATH=%QT5%\bin;C:\MinGW\bin;C:\Program Files (x86)\WiX Toolset v3.11\bin;%PATH%
+    - SET PATH=%QT5%\bin;%MINGW%\bin;C:\Program Files (x86)\WiX Toolset v3.11\bin;%PATH%
     - CD c:\projects
       # Install GSL
     - IF EXIST gsl (CD gsl & git pull) ELSE (git clone https://github.com/ampl/gsl.git & CD gsl)
     - cmake -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_BUILD_TYPE="Release" -G "%CMAKE_GENERATOR%" .
-    - mingw32-make -j2 install
+    - cmake --build . --target install
     - SET GSL_ROOT_DIR="%ProgramFiles(x86)%\GSL"
     - CD ..
       # Install Qwt
@@ -57,9 +57,9 @@ build_script:
     - MKDIR sigmaspectra\build
     - CD sigmaspectra\build
     - cmake -DGSL_ROOT_DIR=%GSL_ROOT_DIR% -DQWT_ROOT_DIR=%QWT_ROOT_DIR% -G "%CMAKE_GENERATOR%" ..
-    - mingw32-make -j2 install
-    - mingw32-make -j2 installer
-    - mingw32-make -j2 archive
+    - cmake --build . --target install
+    - cmake --build . --target installer
+    - cmake --build . --target archive
 
 artifacts:
     - path: build\SigmaSpectra-*.zip
