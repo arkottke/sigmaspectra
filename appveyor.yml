@@ -16,7 +16,7 @@ environment:
     fast_finish: true
     matrix:
         - CMAKE_GENERATOR: "MinGW Makefiles"
-          MINGW: C:\Qt\Tools\mingw530_32\bin
+          MINGW: C:\Qt\Tools\mingw530_32
           QT5: C:\Qt\5.9\mingw53_32
 
 configuration: Release
