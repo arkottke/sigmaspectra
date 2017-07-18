@@ -27,7 +27,7 @@ if (NOT 7Z_PATH)
 endif()
 
 # Configure the installer scripts
-if (NOT WIX_PATH)
+if (WIX_PATH)
     if ($ENV{PLATFORM} STREQUAL "x64") 
         set(PROGRAM_FILES_FOLDER "ProgramFiles64Folder" CACHE STRING "Use C:/Program Files on Windows 64-bit")
     else()
