@@ -22,6 +22,9 @@
 #include "MotionLibrary.h"
 #include "MotionPair.h"
 
+#define _USE_MATH_DEFINES
+#include <cmath>
+
 #include <gsl/gsl_interp.h>
 #include <gsl/gsl_spline.h>
 
@@ -32,8 +35,6 @@
 #include <QTime>
 #include <QtDebug>
 
-#define _USE_MATH_DEFINES
-#include <cmath>
 
 MotionLibrary::MotionLibrary() {
     // Initialize the variables
