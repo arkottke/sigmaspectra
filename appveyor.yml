@@ -33,8 +33,9 @@ install:
     - contrib\install_appveyor_dependencies.bat
 
 build_script:
-    - MKDIR sigmaspectra\build
-    - CD sigmaspectra\build
+    - CD C:\projects\sigmaspectra
+    - MKDIR build
+    - CD build
     - cmake -DGSL_ROOT_DIR=%GSL_ROOT_DIR% -DQWT_ROOT_DIR=%QWT_ROOT_DIR% -G "%CMAKE_GENERATOR%" ..
     - cmake --build . --target install
     - cmake --build . --target installer
