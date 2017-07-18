@@ -22,7 +22,7 @@
           </Component>
         </Directory>
       </Directory>
-      <Directory Id="ProgramFilesFolder">
+      <Directory Id="@PROGRAM_FILES_FOLDER@">
         <Directory Id="INSTALLDIR" Name="@PROJECT_LONGNAME@">
           <Directory Id="PluginsDir" Name="plugins">
             <Directory Id="PlatformPluginsDir" Name="platforms"/>

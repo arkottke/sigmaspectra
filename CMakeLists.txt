@@ -53,8 +53,8 @@ find_package(Qwt REQUIRED)
 include_directories(${GSL_INCLUDE_DIRS} ${QWT_INCLUDE_DIRS})
 set(LIBS ${LIBS} ${GSL_LIBRARIES} ${QWT_LIBRARIES})
 
-# Enable the C++11 standard
-set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} -std=c++14)
+# Enable the C++14 standard
+set(CMAKE_CXX_STANDARD 14)
 
 if(MSVC)
   # Add GSL DLL definition for MSVC

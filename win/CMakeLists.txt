@@ -27,8 +27,16 @@ if (NOT 7Z_PATH)
 endif()
 
 # Configure the installer scripts
-configure_file(installer.cmake.nsi ${CMAKE_BINARY_DIR}/installer.nsi @ONLY)
-configure_file(installer.cmake.wxs installer.wxs @ONLY)
+if (NOT WIX_PATH)
+    if ($ENV{PLATFORM} STREQUAL "x64") 
+        set(PROGRAM_FILES_FOLDER "ProgramFiles64Folder" CACHE STRING "Use C:/Program Files on Windows 64-bit")
+    else()
+        set(PROGRAM_FILES_FOLDER "ProgramFilesFolder" CACHE STRING "Use C:/Program Files (x86) on Windows 64-bit")
+    endif()
+    configure_file(installer.cmake.wxs installer.wxs @ONLY)
+else()
+    configure_file(installer.cmake.nsi ${CMAKE_BINARY_DIR}/installer.nsi @ONLY)
+endif()
 
 # Paths to Qt DLLs
 get_target_property(QtCore_LOCATION Qt5::Core LOCATION)
