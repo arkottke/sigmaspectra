@@ -72,7 +72,7 @@ install(FILES
 # GSL Library
 get_filename_component(GSL_DLL_DIR ${GSL_LIBRARY} PATH)
 install(FILES
-    ${GSL_DLL_DIR}../bin/gsl.dll
+    ${GSL_DLL_DIR}/../bin/gsl.dll
     DESTINATION .
     )  
 # Qt Platform Plugin
