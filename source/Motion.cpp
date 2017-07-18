@@ -337,11 +337,9 @@ void Motion::fft(const QVector<double> &ts,
     while (n <= ts.size()) {
         n <<= 1;
     }
-    // Load the buffer with the initial values
+    // Create a buffer of zeroes, and then add the time series.
     QVector<double> buf = QVector<double>(n, 0.);
-    for (int i = 0; i < ts.size(); ++i) {
-        buf[i] = ts.at(i);
-    }
+    std::copy(ts.begin(), ts.end(), buf.begin());
     // Execute FFT
     gsl_fft_real_radix2_transform(buf.data(), 1, n);
 
@@ -367,8 +365,5 @@ void Motion::ifft(const QVector<std::complex<double>> &fas,
     gsl_fft_halfcomplex_radix2_inverse(buf.data(), 1, n);
 
     ts.resize(n);
-    for (int i = 0; i < ts.size(); ++i) {
-        ts[i] = buf.at(i);
-    }
-    // FIXME memcpy(ts.data(), buf, n * sizeof(double));
+    std::copy(buf.begin(), buf.end(), ts.begin());
 }
