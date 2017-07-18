@@ -69,6 +69,12 @@ install(FILES
     ${QWT_DLL_DIR}/qwt.dll
     DESTINATION .
     )
+# GSL Library
+get_filename_component(GSL_DLL_DIR ${GSL_LIBRARY} PATH)
+install(FILES
+    ${GSL_DLL_DIR}/gsl.dll
+    DESTINATION .
+    )  
 # Qt Platform Plugin
 install(FILES
     ${QT_DLL_DIR}/../plugins/platforms/qwindows.dll
