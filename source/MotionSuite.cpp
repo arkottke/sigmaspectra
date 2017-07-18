@@ -68,7 +68,7 @@ double MotionSuite::stdevError() const {
 }
 
 const QString MotionSuite::errorText() const {
-    return QString("Median RMSE: %1   Max Error: %2\%   Std RMSE: %3   Sigma Inf: %4")
+    return QString("Median RMSE: %1   Max Error: %2%   Std RMSE: %3   Sigma Inf: %4")
             .arg(m_medianError, 6, 'f', 4)
             .arg(m_medianMaxError, 6, 'f', 4)
             .arg(m_stdevError, 6, 'f', 4)
@@ -257,7 +257,7 @@ void MotionSuite::toText(QTextStream &os, MotionSuite::OutputType type) {
     if (type == SummaryOutput || type == CSVOutput) {
         scaleMotions();
         // Print the error information
-        os << QString("Median RMSE,%1\nMedian Max Error (\%),%2\nStd RMSE,%3\nSigma Inf,%4\n")
+        os << QString("Median RMSE,%1\nMedian Max Error (%),%2\nStd RMSE,%3\nSigma Inf,%4\n")
                 .arg(m_medianError)
                 .arg(m_medianMaxError)
                 .arg(m_stdevError)
@@ -299,7 +299,7 @@ void MotionSuite::toText(QTextStream &os, MotionSuite::OutputType type) {
             os << selectMotion(i)->fileName() << "," << selectScalar(i) << endl;
         }
     } else if (type == SHAKE2000Output) {
-        os << QString("Median RMSE: %1 Max Error: %2\% Std RMSE: %3 Sigma Inf: %4")
+        os << QString("Median RMSE: %1 Max Error: %2% Std RMSE: %3 Sigma Inf: %4")
                 .arg(m_medianError, 6, 'f', 4)
                 .arg(m_medianMaxError, 6, 'f', 3)
                 .arg(m_stdevError, 6, 'f', 4)
