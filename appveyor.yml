@@ -32,11 +32,11 @@ cache:
 install:
     # Set up the environment
     # https://www.appveyor.com/docs/lang/cpp/
-    - cmd: |
-    if %PLATFORM%==x86 (
-        ECHO "Setting up x86 Environment"
-        CALL "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86
-    )
+    - cmd: >-
+        if %PLATFORM%==x86 (
+            ECHO "Setting up x86 Environment"
+            CALL "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86
+        )
       # - IF [%PLATFORM%]==[x64] (
       # -   ECHO "Setting up x64 Environment"
 
