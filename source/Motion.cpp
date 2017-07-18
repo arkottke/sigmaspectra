@@ -333,43 +333,42 @@ void Motion::fft(const QVector<double> &ts,
     // required.
     //
     // Compute the next largest power of two
-    size_t n = 1;
+    int n = 1;
     while (n <= ts.size()) {
         n <<= 1;
     }
     // Load the buffer with the initial values
-    double buf[n];
-    for (int i = 0; i < n; ++i) {
-        if (i < ts.size()) {
-            buf[i] = ts.at(i);
-        } else {
-            buf[i] = 0;
-        }
+    QVector<double> buf = QVector<double>(n, 0.);
+    for (int i = 0; i < ts.size(); ++i) {
+        buf[i] = ts.at(i);
     }
     // Execute FFT
-    gsl_fft_real_radix2_transform(buf, 1, n);
+    gsl_fft_real_radix2_transform(buf.data(), 1, n);
 
     // Load the data into out
     fas.resize((int)(n / 2));
-    fas[0] = std::complex<double>(buf[0], 0.0);
+    fas[0] = std::complex<double>(buf.at(0), 0.0);
     for (int i = 1; i < (fas.size() - 1); ++i) {
-        fas[i] = std::complex<double>(buf[i], buf[n - i]);
+        fas[i] = std::complex<double>(buf.at(i), buf.at(n - i));
     }
-    fas[fas.size() - 1] = std::complex<double>(buf[n / 2], 0.0);
+    fas[fas.size() - 1] = std::complex<double>(buf.at(n / 2), 0.0);
 }
 
 void Motion::ifft(const QVector<std::complex<double>> &fas,
                   QVector<double> &ts) {
-    size_t n = (size_t)(2 * fas.size());
-    double buf[n];
+    int n = 2 * fas.size();
+    QVector<double> buf = QVector<double>(n, 0.);
     buf[0] = fas.first().real();
     for (int i = 1; i < (fas.size() - 1); ++i) {
         buf[i] = fas.at(i).real();
         buf[n - i] = fas.at(i).imag();
     }
     buf[n / 2] = fas.last().real();
-    gsl_fft_halfcomplex_radix2_inverse(buf, 1, n);
+    gsl_fft_halfcomplex_radix2_inverse(buf.data(), 1, n);
 
-    ts.resize((int)n);
-    memcpy(ts.data(), buf, n * sizeof(double));
+    ts.resize(n);
+    for (int i = 0; i < ts.size(); ++i) {
+        ts[i] = buf.at(i);
+    }
+    // FIXME memcpy(ts.data(), buf, n * sizeof(double));
 }
