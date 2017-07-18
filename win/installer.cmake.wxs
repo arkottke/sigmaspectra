@@ -80,12 +80,6 @@
         <File Name="Qt5Xml.dll" KeyPath="yes"/>
       </Component>
     </ComponentGroup>
-    <!-- Qwt DLL -->
-    <ComponentGroup Id="QwtDll" Directory="INSTALLDIR">
-      <Component Guid="*">
-        <File Name="qwt.dll" KeyPath="yes"/>
-      </Component>
-    </ComponentGroup>
     <!-- Platform Plugins -->
     <ComponentGroup Id="PlatformPlugins" Directory="PlatformPluginsDir"
                     Source="plugins\platforms">
@@ -93,15 +87,27 @@
         <File Name="qwindows.dll" KeyPath="yes"/>
       </Component>
     </ComponentGroup>
-
+    <!-- Qwt DLL -->
+    <ComponentGroup Id="QwtDll" Directory="INSTALLDIR">
+      <Component Guid="*">
+        <File Name="qwt.dll" KeyPath="yes"/>
+      </Component>
+    </ComponentGroup>
+      <!-- Qwt DLL -->
+    <ComponentGroup Id="GSLDll" Directory="INSTALLDIR">
+      <Component Guid="*">
+        <File Name="gsl.dll" KeyPath="yes"/>
+      </Component>
+    </ComponentGroup>
     <!-- This describes what will actually get installed -->
     <Feature Id="Core">
       <ComponentRef Id="MainExecutable"/>
       <ComponentRef Id="qt.conf"/>
       <ComponentGroupRef Id="RuntimeDlls"/>
       <ComponentGroupRef Id="QtDlls"/>
-      <ComponentGroupRef Id="QwtDll"/>
       <ComponentGroupRef Id="PlatformPlugins"/>
+      <ComponentGroupRef Id="QwtDll"/>
+      <ComponentGroupRef Id="GSLDll"/>
       <ComponentRef Id="ProductMenuDir"/>
     </Feature>
 
