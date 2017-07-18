@@ -32,6 +32,9 @@
 #include <QTime>
 #include <QtDebug>
 
+#define _USE_MATH_DEFINES
+#include <cmath>
+
 MotionLibrary::MotionLibrary() {
     // Initialize the variables
     m_motionCount = 0;
