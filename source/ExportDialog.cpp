@@ -182,13 +182,15 @@ void ExportDialog::tryAccept() {
             break;
         case MotionSuite::CSVOutput:
             for (int i = 0; i < m_suites.size(); ++i) {
-                if (!m_suites.at(i)->enabled())
+                if (!m_suites.at(i)->enabled()) {
                     continue;
+                }
 
                 QFile file(QString("%1-%2.csv").arg(baseName).arg(i + 1));
 
-                if (not file.open(QIODevice::WriteOnly | QIODevice::Text))
+                if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) { 
                     qCritical() << "Unable to open file:" << file.fileName();
+                }
 
                 QTextStream out(&file);
                 m_suites.at(i)->toText(out, MotionSuite::CSVOutput);
@@ -201,8 +203,9 @@ void ExportDialog::tryAccept() {
 
                 QFile file(QString("%1-%2.csv").arg(baseName).arg(i + 1));
 
-                if (not file.open(QIODevice::WriteOnly | QIODevice::Text))
+                if (!file.open(QIODevice::WriteOnly | QIODevice::Text)){
                     qCritical() << "Unable to open file:" << file.fileName();
+                }
 
                 QTextStream out(&file);
                 m_suites.at(i)->toText(out, MotionSuite::StrataOutput);
@@ -211,7 +214,7 @@ void ExportDialog::tryAccept() {
         case MotionSuite::SHAKE2000Output: {
             QFile file(QDir::currentPath() + QDir::separator() + "SuiteLog.txt");
 
-            if (not file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
                 qCritical() << "Unable to open file:" << file.fileName();
             }
 
@@ -239,8 +242,9 @@ void ExportDialog::tryAccept() {
 
         QFile file(destinationDir + QDir::separator() + "summary.csv");
 
-        if (not file.open(QIODevice::WriteOnly | QIODevice::Text))
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
             qCritical() << "Unable to open file:" << file.fileName();
+        }
 
         QTextStream out(&file);
 
