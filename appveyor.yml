@@ -45,7 +45,7 @@ install:
     - CD c:\projects
       # Install GSL
     - IF EXIST gsl (CD gsl & git pull) ELSE (git clone https://github.com/ampl/gsl.git & CD gsl)
-    - cmake -DGSL_DISABLE_WARNINGS -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_BUILD_TYPE="Release" -G "%CMAKE_GENERATOR%" .
+    - cmake -DGSL_DISABLE_WARNINGS -DBUILD_SHARED_LIBS -DMSVC_RUNTIME_DYNAMIC -DCMAKE_BUILD_TYPE="Release" -G "%CMAKE_GENERATOR%" .
     - cmake --build . --target install
     - SET GSL_ROOT_DIR="%ProgramFiles(x86)%\GSL"
     - CD ..
