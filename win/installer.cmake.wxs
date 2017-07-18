@@ -47,13 +47,13 @@
     <!-- Runtime DLLs -->
     <ComponentGroup Id="RuntimeDlls" Directory="INSTALLDIR">
       <Component Guid="*">
-        <File Name="libgcc_s_dw2-1.dll" KeyPath="yes"/>
+        <File Name="msvcp140.dll" KeyPath="yes"/>
       </Component>
       <Component Guid="*">
-        <File Name="libstdc++-6.dll" KeyPath="yes"/>
+        <File Name="vcruntime140.dll" KeyPath="yes"/>
       </Component>
       <Component Guid="*">
-        <File Name="libwinpthread-1.dll" KeyPath="yes"/>
+        <File Name="concrt140.dll" KeyPath="yes"/>
       </Component>
     </ComponentGroup>
     <!-- Qt DLLs -->
