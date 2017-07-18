@@ -85,7 +85,7 @@ if (WIX_PATH)
         COMMAND ${WIX_PATH}/candle.exe ${CMAKE_CURRENT_BINARY_DIR}/installer.wxs
         COMMAND ${WIX_PATH}/light.exe -ext WixUIExtension -ext WixUtilExtension
         -b ${CMAKE_INSTALL_PREFIX} -b ${CMAKE_SOURCE_DIR}/win
-        -out "${PROJECT_LONGNAME}-v${PROJECT_VERSION}-${PROJECT_GITHASH}.msi"
+        -out "${PROJECT_LONGNAME}-$ENV{platform}-v${PROJECT_VERSION}-${PROJECT_GITHASH}.msi"
         installer.wixobj
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         VERBATIM
@@ -98,7 +98,7 @@ if (7Z_PATH)
     message(${CMAKE_CURRENT_BINARY_DIR})
     message(${CMAKE_CURRENT_SOURCE_DIR})
     add_custom_target(archive
-        COMMAND 7z a ${CMAKE_BINARY_DIR}/SigmaSpectra-v${PROJECT_VERSION}-${PROJECT_GITHASH}.zip *
+        COMMAND 7z a ${CMAKE_BINARY_DIR}/SigmaSpectra-$ENV{platform}-v${PROJECT_VERSION}-${PROJECT_GITHASH}.zip *
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/dist
         VERBATIM
         )
