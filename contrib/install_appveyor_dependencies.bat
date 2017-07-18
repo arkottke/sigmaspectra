@@ -3,6 +3,7 @@
 REM Set up the CPP environment
 REM https://www.appveyor.com/docs/lang/cpp/
 IF %PLATFORM%==x86 (
+    ECHO "Using x86 Environment"
     CALL "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86
 ) ELSE (
     ECHO "Using x64 Environment"
