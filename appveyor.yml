@@ -30,32 +30,7 @@ cache:
     - c:\projects\qwt -> appveyor.yml
 
 install:
-    # Set up the environment
-    # https://www.appveyor.com/docs/lang/cpp/
-    - ps: |
-        IF ($env:PLATFORM -eq "x86") {
-            Write-Host "Using x86 Environment"
-            & "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86
-        } ELSE {
-            Write-Host "Using x64 Environment"
-            & "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64 
-            & "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" amd64
-        }
-    # Add Qt and WiX to PATH
-    - SET PATH=%QT5%\bin;C:\Program Files (x86)\WiX Toolset v3.11\bin;%PATH%
-    - CD c:\projects
-      # Install GSL
-    - IF EXIST gsl (CD gsl & git pull) ELSE (git clone https://github.com/ampl/gsl.git & CD gsl)
-    - cmake -DGSL_DISABLE_WARNINGS:BOOL=ON -DBUILD_SHARED_LIBS:BOOL=ON -DMSVC_RUNTIME_DYNAMIC:BOOL=ON -DCMAKE_BUILD_TYPE="Release" -G "%CMAKE_GENERATOR%" .
-    - cmake --build . --target install
-    - SET GSL_ROOT_DIR="%ProgramFiles(x86)%\GSL"
-    - CD ..
-      # Install Qwt
-    - IF EXIST qwt (CD qwt & svn update) ELSE (svn co -r HEAD svn://svn.code.sf.net/p/qwt/code/branches/qwt-6.1 qwt & CD qwt)
-    - qmake
-    - nmake 
-    - set QWT_ROOT_DIR=%CD%
-    - CD ..
+    - contrib\install_appveyor_dependencies.bat
 
 build_script:
     - MKDIR sigmaspectra\build
