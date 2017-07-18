@@ -32,15 +32,15 @@ cache:
 install:
     # Set up the environment
     # https://www.appveyor.com/docs/lang/cpp/
-    - IF /I %PLATFORM%==x86 ECHO "x86 Environment" && CALL "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86
-    - IF /I %PLATFORM%==x64 ECHO "x64 Environment" && CALL "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64 && CALL "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86_amd64
-        )
-      # - IF [%PLATFORM%]==[x64] (
-      # -   ECHO "Setting up x64 Environment"
-
-      # -   CALL "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64 
-      # -   CALL "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86_amd64
-      # - )
+    - ps: |
+        IF ($env:PLATFORM -eq "x86") {
+            Write-Host "Using x86 Environment"
+            & "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86
+        } ELSE {
+            Write-Host "Using x64 Environment"
+            & "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64 
+            & "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" amd64
+        }
     # Add Qt and WiX to PATH
     - SET PATH=%QT5%\bin;C:\Program Files (x86)\WiX Toolset v3.11\bin;%PATH%
     - CD c:\projects
