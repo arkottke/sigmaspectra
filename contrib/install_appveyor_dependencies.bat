@@ -1,3 +1,8 @@
+@ECHO OFF
+
+REM Set up the CPP environment
+REM https://www.appveyor.com/docs/lang/cpp/
+IF %PLATFORM%==x86 (
     CALL "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86
 ) ELSE (
     ECHO "Using x64 Environment"
@@ -6,7 +11,6 @@
 )
 
 SET PATH=%QT5%\bin;C:\Program Files (x86)\WiX Toolset v3.11\bin;%PATH%
-
 CD c:\projects
 
 REM Install GSL
@@ -46,5 +50,3 @@ IF EXIST qwt (
 qmake
 nmake 
 set QWT_ROOT_DIR=%CD%
-
-CD ..
