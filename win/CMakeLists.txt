@@ -105,6 +105,7 @@ if (WIX_PATH)
         COMMAND ${WIX_PATH}/candle.exe ${CMAKE_CURRENT_BINARY_DIR}/installer.wxs
         COMMAND ${WIX_PATH}/light.exe -ext WixUIExtension -ext WixUtilExtension
         -b ${CMAKE_INSTALL_PREFIX} -b ${CMAKE_SOURCE_DIR}/win
+        -arch $ENV{platform}
         -out "${PROJECT_LONGNAME}-$ENV{platform}-v${PROJECT_VERSION}-${PROJECT_GITHASH}.msi"
         installer.wixobj
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
