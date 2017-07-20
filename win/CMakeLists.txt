@@ -28,7 +28,7 @@ endif()
 
 # Configure the installer scripts
 if (WIX_PATH)
-    if ($ENV{PLATFORM} STREQUAL "x64") 
+    if ($ENV{PLATFORM} MATCHES "[xX]64") 
         set(PROGRAM_FILES_FOLDER "ProgramFiles64Folder" CACHE STRING "Use C:/Program Files on Windows 64-bit")
     else()
         set(PROGRAM_FILES_FOLDER "ProgramFilesFolder" CACHE STRING "Use C:/Program Files (x86) on Windows 64-bit")
