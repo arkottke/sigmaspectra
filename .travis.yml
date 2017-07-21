@@ -20,7 +20,7 @@ install:
     - cd qwt
     - QWT_ROOT_DIR=`pwd`
     - qmake
-    - make -j2
+    - make -j$(nproc)
 
 script:
     - cd $TRAVIS_BUILD_DIR
@@ -28,13 +28,14 @@ script:
     - cd build
       # Add paths for libraries
       # CMAKE_SKIP_RPATH=ON is required to prevent CMake from removing the runtime path from the exectuable
-    - cmake .. -DQWT_ROOT_DIR=$QWT_ROOT_DIR -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:STRING=dist -DCMAKE_SKIP_RPATH=ON
-    - make -j2
+      # -DCMAKE_SKIP_RPATH=ON
+    - cmake .. -DQWT_ROOT_DIR=$QWT_ROOT_DIR -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:STRING=dist
+    - make -j$(nproc)
     - make install
     - find dist/
     - wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
     - chmod a+x linuxdeployqt*.AppImage
-    - unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
+    # - unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
     - ldd dist/usr/bin/sigmaspectra
     - ./linuxdeployqt-*.AppImage dist/sigmaspectra.desktop -bundle-non-qt-libs -no-translations
     - ./linuxdeployqt-*.AppImage dist/sigmaspectra.desktop -appimage
