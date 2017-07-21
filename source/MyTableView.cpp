@@ -78,8 +78,9 @@ void MyTableView::paste() {
             // All rows of the table
             QDomNodeList nodeList = doc.elementsByTagName("tr");
 
-            if (nodeList.isEmpty())
+            if (nodeList.isEmpty()) {
                 return;
+            }
 
             for (int i = 0; i < nodeList.size(); ++i) {
                 data << QList<double>();

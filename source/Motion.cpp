@@ -96,7 +96,7 @@ void Motion::scaleBy(const double factor) {
 void Motion::processFile() {
     QFileInfo fileInfo(m_fileName);
 
-    if (!fileInfo.isFile()) {
+    if (fileInfo.isFile() == false) {
         qCritical("File is not found!");
     }
 

@@ -25,10 +25,10 @@
 
 MotionSuite::MotionSuite(const QVector<double> &period, const QVector<double> &targetLnSa,
                          const QVector<double> &targetLnStd)
-        : m_period(period), m_targetLnSa(targetLnSa), m_targetLnStd(targetLnStd) {
+        : m_period(period), m_targetLnSa(targetLnSa), m_targetLnStd(targetLnStd), 
+        m_medianError(-1), m_stdevError(-1), m_medianMaxError(-1), m_sigmaInf(-1) {
     m_rank = 0;
     m_enabled = false;
-    m_medianError = -1;
 }
 
 MotionSuite::~MotionSuite() {
@@ -216,12 +216,11 @@ void MotionSuite::computeScalars() {
         }
     }
 
-    double minError = 100;
     double minScale = -1;
-
     if (zeroSigmaValue) {
         minScale = 1.0;
     } else {
+        double minError = 100;
         for (double scale = 0.10; scale < 3; scale += 0.01) {
             double error = computeStdError(scale, centroids);
             if (error < minError) {

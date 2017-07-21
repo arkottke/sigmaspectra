@@ -167,7 +167,7 @@ int closestCurveIndex(const QPoint &point, QList<QwtPlotCurve *> curves) {
     int minIndex = 0;
     int index = 0;
     for (QwtPlotCurve *curve : curves) {
-        if (!curve->plot()) {
+        if (curve->plot() == 0) {
             // Continue if not attached to the plot
             continue;
         }

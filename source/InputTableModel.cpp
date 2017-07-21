@@ -93,8 +93,9 @@ Qt::ItemFlags InputTableModel::flags(const QModelIndex &index) const {
 }
 
 QVariant InputTableModel::headerData(int section, Qt::Orientation orientation, int role) const {
-    if (role != Qt::DisplayRole && role != Qt::EditRole && role != Qt::UserRole)
+    if (role != Qt::DisplayRole && role != Qt::EditRole && role != Qt::UserRole) {
         return QVariant();
+    }
 
     switch (orientation) {
         case Qt::Horizontal:

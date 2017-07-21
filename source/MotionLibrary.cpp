@@ -766,8 +766,9 @@ bool MotionLibrary::selectSuites() {
                 break;
             }
         }
-        if (badSeed)
+        if (badSeed) {
             continue;
+        }
 
         // Create a MotionSuite and add the seed motions
         MotionSuite *ms = new MotionSuite(m_period, m_targetLnSa, m_targetLnStd);
@@ -908,16 +909,18 @@ void MotionLibrary::addSuite(MotionSuite *suite) {
 }
 
 bool MotionLibrary::nextSeed() {
-    if (m_seed[0] == (m_motions.size() - m_seed.size()))
+    if (m_seed[0] == (m_motions.size() - m_seed.size())) {
         return false;
+    }
 
     for (int i = m_seed.size() - 1; i >= 0; i--) {
         if (m_seed.at(i) < (m_motions.size() - m_seed.size() + i)) {
             // The value at position i can be increased by one and the
             // remaining values reset
             m_seed[i]++;
-            for (int j = i + 1; j < m_seed.size(); j++)
+            for (int j = i + 1; j < m_seed.size(); j++) {
                 m_seed[j] = m_seed.at(j - 1) + 1;
+            }
             return true;
         }
     }
