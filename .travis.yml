@@ -13,7 +13,7 @@ before_install:
     - sudo apt-get update -qq
 
 install:
-    - sudo apt-get install -qq libgsl0-dev qt59base qt59tools qt59svg
+    - sudo apt-get install -qq libgsl0-dev qt59base qt59tools qt59svg coreutils
     - source /opt/qt59/bin/qt59-env.sh
     - cd $TRAVIS_BUILD_DIR/..
     - svn checkout svn://svn.code.sf.net/p/qwt/code/branches/qwt-6.1 qwt
