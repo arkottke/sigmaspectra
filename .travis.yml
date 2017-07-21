@@ -27,7 +27,8 @@ script:
     - mkdir build
     - cd build
       # Add paths for libraries
-    - cmake .. -DQWT_ROOT_DIR=$QWT_ROOT_DIR -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:STRING=dist
+      # CMAKE_SKIP_RPATH=ON is required to prevent CMake from removing the runtime path from the exectuable
+    - cmake .. -DQWT_ROOT_DIR=$QWT_ROOT_DIR -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:STRING=dist -DCMAKE_SKIP_RPATH=ON
     - make -j2
     - make install
     - find dist/
