@@ -19,7 +19,7 @@ install:
     - svn checkout svn://svn.code.sf.net/p/qwt/code/branches/qwt-6.1 qwt
     - cd qwt
     - QWT_ROOT_DIR=`pwd`
-    - LD_LIBRARY_PATH=`pwd`:$LD_LIBRARY_PATH
+    - LD_LIBRARY_PATH=$(realpath lib):$LD_LIBRARY_PATH
     - qmake
     - make -j$(nproc)
 
