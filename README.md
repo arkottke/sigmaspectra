@@ -4,6 +4,7 @@
 [![License](https://img.shields.io/badge/license-GLPv3-blue.svg)](https://github.com/arkottke/sigmaspectra/blob/master/LICENSE.txt) 
 [![Build Status](https://travis-ci.org/arkottke/sigmaspectra.svg?branch=master)](https://travis-ci.org/arkottke/sigmaspectra)
 [![Build Status](https://ci.appveyor.com/api/projects/status/lllrg71eoxcetnoq?svg=true)](https://ci.appveyor.com/project/arkottke/sigmaspectra)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c01fc8b255fe4fb8b079783e3481ec5d)](https://www.codacy.com/app/arkottke/sigmaspectra?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=arkottke/sigmaspectra&amp;utm_campaign=Badge_Grade)
 
 ## Installation
 
