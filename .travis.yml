@@ -36,14 +36,16 @@ script:
     - make install
     - wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
     - chmod a+x linuxdeployqt*.AppImage
-    # - unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
+      # - unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
     - ldd dist/usr/bin/sigmaspectra
     - ./linuxdeployqt-*.AppImage dist/sigmaspectra.desktop -bundle-non-qt-libs -no-translations
     - ./linuxdeployqt-*.AppImage dist/sigmaspectra.desktop -appimage
 
 after_success:
+      # Upload AppImage to transfer.sh
     - find ./dist -executable -type f -exec ldd {} \; | grep " => /usr" | cut -d " " -f 2-3 | sort | uniq
-    - ls
     - VERSION=$(sed -ne 's/.*VERSION "\([0-9.]\+\)".*/\1/p' ../CMakeLists.txt)
     - GITHASH=$(git rev-parse --short HEAD)
     - curl --upload-file ./SigmaSpectra*.AppImage https://transfer.sh/SigmaSpectra-v$VERSION-$GITHASH-x86_64.AppImage
+      # Upload codecov report
+    - bash <(curl -s https://codecov.io/bash)
