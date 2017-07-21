@@ -4,7 +4,6 @@
 [![License](https://img.shields.io/badge/license-GLPv3-blue.svg)](https://github.com/arkottke/sigmaspectra/blob/master/LICENSE.txt) 
 [![Build Status](https://travis-ci.org/arkottke/sigmaspectra.svg?branch=master)](https://travis-ci.org/arkottke/sigmaspectra)
 [![Build Status](https://ci.appveyor.com/api/projects/status/lllrg71eoxcetnoq?svg=true)](https://ci.appveyor.com/project/arkottke/sigmaspectra)
-[![codecov](https://codecov.io/gh/arkottke/sigmaspectra/branch/master/graph/badge.svg)](https://codecov.io/gh/arkottke/sigmaspectra)
 
 ## Installation
 

@@ -47,5 +47,3 @@ after_success:
     - VERSION=$(sed -ne 's/.*VERSION "\([0-9.]\+\)".*/\1/p' ../CMakeLists.txt)
     - GITHASH=$(git rev-parse --short HEAD)
     - curl --upload-file ./SigmaSpectra*.AppImage https://transfer.sh/SigmaSpectra-v$VERSION-$GITHASH-x86_64.AppImage
-      # Upload codecov report
-    - bash <(curl -s https://codecov.io/bash)
