@@ -36,6 +36,7 @@ execute_process(
     OUTPUT_VARIABLE PROJECT_GITHASH
     OUTPUT_STRIP_TRAILING_WHITESPACE)
 set(PROJECT_VERSION "1.0.0")
+set( ENV{PROJECT_VERSION} ${PROJECT_VERSION} )
 
 # Global CMake options
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -65,6 +66,7 @@ endif()
 enable_testing()
 set(TEST_LINK_LIBRARIES Qt5::Test)
 
+add_subdirectory(resources)
 add_subdirectory(source)
 add_subdirectory(tests)
 

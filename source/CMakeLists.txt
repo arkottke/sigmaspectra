@@ -55,6 +55,30 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 
 if (UNIX)
     install(TARGETS ${CMAKE_PROJECT_NAME} RUNTIME DESTINATION bin)
+    install(FILES
+        ${CMAKE_BINARY_DIR}/resources/sigmaspectra.desktop
+        DESTINATION share/${CMAKE_PROJECT_NAME}/application
+        )
+    # Manual and example
+    install(FILES
+        ${CMAKE_SOURCE_DIR}/manual/manual.pdf
+        ${CMAKE_SOURCE_DIR}/manual/example-target.csv
+        DESTINATION share/${CMAKE_PROJECT_NAME}/doc
+        )
+    install(DIRECTORY
+        ${CMAKE_SOURCE_DIR}/example 
+        DESTINATION share/${CMAKE_PROJECT_NAME}
+        )
 elseif(WIN32)
     install(TARGETS ${CMAKE_PROJECT_NAME} DESTINATION .)
+    # Manual and example
+    install(FILES
+        ${CMAKE_SOURCE_DIR}/manual/manual.pdf
+        ${CMAKE_SOURCE_DIR}/manual/example-target.csv
+        DESTINATION doc
+        )
+    install(DIRECTORY
+        ${CMAKE_SOURCE_DIR}/example 
+        DESTINATION .
+        )
 endif()

@@ -26,7 +26,17 @@ script:
     - cd $TRAVIS_BUILD_DIR
     - mkdir build
     - cd build
-    - source /opt/qt59/bin/qt59-env.sh
       # Add paths for libraries
-    - cmake .. -DQWT_ROOT_DIR=$QWT_ROOT_DIR -DCMAKE_BUILD_TYPE=Release
+    - cmake .. -DQWT_ROOT_DIR=$QWT_ROOT_DIR -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:STRING=dist
     - make -j2
+    - make install
+    - find dist/
+    - wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
+    - chmod a+x linuxdeployqt*.AppImage
+    - unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
+    - ./linuxdeployqt-*.AppImage ./dist/sigmaspectra.desktop -bundle-non-qt-libs -no-translations
+    - ./linuxdeployqt-*.AppImage ./dist/sigmaspectra.desktop -appimage
+
+after_success:
+    - find ./dist -executable -type f -exec ldd {} \; | grep " => /usr" | cut -d " " -f 2-3 | sort | uniq
+    - curl --upload-file ./SigmaSpectra*.AppImage https://transfer.sh/SigmaSpectra-v${PROJECT_VERSION}-$(git rev-parse --short HEAD)-x86_64.AppImage

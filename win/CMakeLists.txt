@@ -88,16 +88,6 @@ install(FILES
     ${QT_DLL_DIR}/../plugins/platforms/qwindows.dll
     DESTINATION plugins/platforms
     )
-# Manual and example
-install(FILES
-    ${CMAKE_SOURCE_DIR}/manual/manual.pdf
-    ${CMAKE_SOURCE_DIR}/manual/example-target.csv
-    DESTINATION .
-    )
-install(DIRECTORY
-    ${CMAKE_SOURCE_DIR}/example 
-    DESTINATION .
-    )
 # Custom target to build the WiX installer. Should be run after the install
 # target.
 if (WIX_PATH)
