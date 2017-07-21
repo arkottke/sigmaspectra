@@ -28,7 +28,7 @@ endif()
 
 # Configure the installer scripts
 if (WIX_PATH)
-    if ($ENV{PLATFORM} STREQUAL "x64") 
+    if ($ENV{PLATFORM} MATCHES "[xX]64") 
         set(PROGRAM_FILES_FOLDER "ProgramFiles64Folder" CACHE STRING "Use C:/Program Files on Windows 64-bit")
     else()
         set(PROGRAM_FILES_FOLDER "ProgramFilesFolder" CACHE STRING "Use C:/Program Files (x86) on Windows 64-bit")
@@ -92,7 +92,9 @@ install(FILES
 # target.
 if (WIX_PATH)
     add_custom_target(installer
-        COMMAND ${WIX_PATH}/candle.exe ${CMAKE_CURRENT_BINARY_DIR}/installer.wxs
+        COMMAND ${WIX_PATH}/candle.exe 
+        -arch $ENV{platform}
+        ${CMAKE_CURRENT_BINARY_DIR}/installer.wxs
         COMMAND ${WIX_PATH}/light.exe -ext WixUIExtension -ext WixUtilExtension
         -b ${CMAKE_INSTALL_PREFIX} -b ${CMAKE_SOURCE_DIR}/win
         -out "${PROJECT_LONGNAME}-$ENV{platform}-v${PROJECT_VERSION}-${PROJECT_GITHASH}.msi"

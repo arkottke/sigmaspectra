@@ -132,6 +132,6 @@
     <WixVariable Id="WixUIBannerBmp" Value="installer-header.bmp"/>  Size: 493x58
     <WixVariable Id="WixUIDialogBmp" Value="installer-welcome.bmp"/> Size: 493x312
     -->
-    <WixVariable Id="WixUILicenseRtf" Value="..\LICENSE.txt"/>
+    <WixVariable Id="WixUILicenseRtf" Value="..\LICENSE.rtf"/>
   </Product>
 </Wix>
