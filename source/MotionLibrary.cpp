@@ -193,8 +193,9 @@ void MotionLibrary::setCombineComponents(bool b) {
 QString MotionLibrary::motionPath() const { return m_motionPath; }
 
 void MotionLibrary::setMotionPath(const QString &path) {
-    if (!QFile::exists(path))
+    if (QFile::exists(path) == false) {
         return;
+    }
 
     m_motionsNeedProcessing = true;
     m_motionPath = path;
@@ -409,8 +410,9 @@ bool MotionLibrary::interp(const QVector<double> &x, const QVector<double> &y,
 bool MotionLibrary::readMotions() {
     m_okToContinue = true;
     // Check the input, if false then there is an error
-    if (!isInputValid())
+    if (isInputValid() == false) {
         return false;
+    }
 
     if (m_periodInterp) {
         m_period.resize(m_periodCount);
@@ -430,11 +432,13 @@ bool MotionLibrary::readMotions() {
             }
         }
 
-        if (!interp(m_inputPeriod, m_inputSa, m_period, m_targetSa))
+        if (interp(m_inputPeriod, m_inputSa, m_period, m_targetSa) == false) {
             return false;
+        }
 
-        if (!interp(m_inputPeriod, m_inputLnStd, m_period, m_targetLnStd))
+        if (interp(m_inputPeriod, m_inputLnStd, m_period, m_targetLnStd)) {
             return false;
+        }
     } else {
         m_period = m_inputPeriod;
         m_targetSa = m_inputSa;
@@ -483,7 +487,7 @@ bool MotionLibrary::readMotions() {
                 motions << new Motion(it.filePath());
             }
 
-            if (!m_okToContinue) {
+            if (m_okToContinue == false) {
                 return false;
             }
         }
@@ -510,7 +514,7 @@ bool MotionLibrary::readMotions() {
                     delete motionA;
                 }
 
-                if (!m_okToContinue) {
+                if (m_okToContinue == false) {
                     return false;
                 }
             }
@@ -547,8 +551,7 @@ int MotionLibrary::countPath(const QString &path) {
                     QDirIterator::Subdirectories);
 
     while (it.hasNext()) {
-        if (it.next().endsWith(".AT2"))
-            ++count;
+        if (it.next().endsWith(".AT2")) { ++count; }
     }
 
     return count;
@@ -569,11 +572,13 @@ double MotionLibrary::countTrials() {
 
         // Count the number of iterative trials
         unsigned long iterCmb = 0;
-        for (int i = 0; i < m_suiteSize; ++i)
+        for (int i = 0; i < m_suiteSize; ++i) {
             iterCmb += motionCount - i;
+        }
 
-        if (iterCmb == 0)
+        if (iterCmb == 0) { 
             iterCmb = 1;
+        }
 
         // Return the product of the iterative portion and the seed portion
         return m_seedCount * iterCmb;
@@ -604,17 +609,17 @@ void MotionLibrary::save() {
 
 bool MotionLibrary::compute() {
     // Read each of the motions
-    if (!readMotions()) {
+    if (readMotions() == false) {
         return false;
     }
 
     // Select the suites
     emit logText("Selecting suites");
-    if (!selectSuites()) {
+    if (selectSuites() == false) {
         return false;
     }
 
-    if (!m_suites.size()) {
+    if (m_suites.size() == 0) {
         emit logText("No suites found!");
         return false;
     }
@@ -623,7 +628,7 @@ bool MotionLibrary::compute() {
     qSort(m_suites.begin(), m_suites.end(), lessThan);
 
     // Scale the selected suites
-    if (!m_okToContinue) {
+    if (m_okToContinue == false) {
         return false;
     }
 
@@ -643,7 +648,7 @@ bool MotionLibrary::compute() {
 }
 
 bool MotionLibrary::isInputValid() {
-    if (!m_inputPeriod.size()) {
+    if (m_inputPeriod.size() == 0) {
         qCritical("No target specified");
         return false;
     }
@@ -724,7 +729,7 @@ bool MotionLibrary::isInputValid() {
 
 bool MotionLibrary::selectSuites() {
     // Delete previously selected suites
-    while (!m_suites.isEmpty()) {
+    while (m_suites.isEmpty() == false) {
         delete m_suites.takeFirst();
     }
 
@@ -774,7 +779,7 @@ bool MotionLibrary::selectSuites() {
         // appropriate suite size has been achieved
         bool motionWasAdded = true;
         while (motionWasAdded && ms->motions().size() < m_suiteSize) {
-            if (!m_okToContinue) {
+            if (m_okToContinue == false) {
                 return false;
             }
 
@@ -786,7 +791,7 @@ bool MotionLibrary::selectSuites() {
             int minIdx = -1;
             for (int i = 0; i < m_motions.size(); i++) {
                 // Skip if the motion is not valid -- not previously added
-                if (!ms->isMotionValid(m_oneMotionPerStation, m_motions.at(i))) {
+                if (ms->isMotionValid(m_oneMotionPerStation, m_motions.at(i)) == false) {
                     continue;
                 }
 
@@ -837,7 +842,7 @@ bool MotionLibrary::selectSuites() {
             nextPercent = percent + 1;
         }
 
-        if (!m_okToContinue) {
+        if (m_okToContinue == false) {
             // Stop if the user requests it.
             return false;
         }

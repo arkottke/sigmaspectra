@@ -29,7 +29,7 @@
 
 Motion::Motion(const QString &fileName)
         : AbstractMotion(), m_fileName(fileName) {
-    if (!fileName.isEmpty()) {
+    if (fileName.isEmpty() == false) {
         processFile();
     }
 }
@@ -191,12 +191,9 @@ void Motion::processFile() {
         // Normalize the intensity relative to the maximum
         double norm = arias.at(i) / m_ariasInt;
         // Calculate the index values for 5, 75, and 95 percent intensities
-        if (norm < 0.05)
-            ++i5;
-        if (norm < 0.75)
-            ++i75;
-        if (norm < 0.95)
-            ++i95;
+        if (norm < 0.05) { ++i5; }
+        if (norm < 0.75) { ++i75; }
+        if (norm < 0.95) { ++i95; }
     }
     // Compute the durations
     m_dur5_95 = m_dt * (i95 - i5);

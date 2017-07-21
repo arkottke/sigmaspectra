@@ -49,8 +49,9 @@ int FlagMotionsModel::columnCount(const QModelIndex &parent) const {
 }
 
 QVariant FlagMotionsModel::data(const QModelIndex &index, int role) const {
-    if (index.parent() != QModelIndex())
+    if (index.parent() != QModelIndex()) {
         return QVariant();
+    }
 
     // Icon of the row
     if (index.column() == 0 && role == Qt::DecorationRole) {
@@ -88,8 +89,9 @@ QVariant FlagMotionsModel::data(const QModelIndex &index, int role) const {
 }
 
 bool FlagMotionsModel::setData(const QModelIndex &index, const QVariant &value, int role) {
-    if (index.parent() != QModelIndex())
+    if (index.parent() != QModelIndex()) {
         return false;
+    }
 
     if (role == Qt::DisplayRole || role == Qt::EditRole || role == Qt::UserRole) {
         switch (index.column()) {

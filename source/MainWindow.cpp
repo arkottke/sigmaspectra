@@ -98,11 +98,12 @@ void MainWindow::about() {
 void MainWindow::addRow() {
     QModelIndexList selectedRows = m_tableView->selectionModel()->selectedRows();
     // Always add one layer at the end of the list
-    if (selectedRows.isEmpty())
+    if (selectedRows.isEmpty()) {
         m_tableView->model()->insertRows(m_tableView->model()->rowCount(), 1);
-    else
+    } else {
         m_tableView->model()->insertRows(selectedRows.first().row(),
                                          selectedRows.size());
+    }
 }
 
 void MainWindow::removeRow() {
@@ -122,7 +123,7 @@ void MainWindow::selectPath() {
             : m_pathLineEdit->text(),
             QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
-    if (!dir.isEmpty()) {
+    if (dir.isEmpty() == false) {
         m_settings->setValue("mainWindow/path", dir);
         m_pathLineEdit->setText(QDir::toNativeSeparators(dir));
         m_motionLibrary->setMotionPath(dir);
@@ -163,11 +164,7 @@ void MainWindow::compute() {
 
 void MainWindow::cellSelected() {
     QModelIndexList selectedRows = m_tableView->selectionModel()->selectedRows();
-
-    if (!selectedRows.isEmpty())
-        m_removeRowPushButton->setEnabled(true);
-    else
-        m_removeRowPushButton->setEnabled(false);
+    m_removeRowPushButton->setEnabled(selectedRows.isEmpty() == false);
 }
 
 void MainWindow::updateSuiteSize(int suiteSize) {
@@ -204,8 +201,9 @@ void MainWindow::flagMotions() {
             }
         }
 
-        if (m_motionLibrary->suiteSize() < required)
+        if (m_motionLibrary->suiteSize() < required) {
             qCritical("Required number of motions is greater than suite size!");
+        }
 
         emit requiredCountChanged(required);
         emit requestedCountChanged(requested);

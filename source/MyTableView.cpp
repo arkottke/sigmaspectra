@@ -50,12 +50,13 @@ void MyTableView::copy() {
         data += model()->data(selectedIndexes.at(i)).toString();
 
         if (i + 1 < selectedIndexes.size()) {
-            if (selectedIndexes.at(i).row() != selectedIndexes.at(i + 1).row())
+            if (selectedIndexes.at(i).row() != selectedIndexes.at(i + 1).row()) {
                 // Add a line break when the row changes
                 data += "\n";
-            else
+            } else {
                 // Add a tab to separate values on the same row
                 data += "\t";
+            }
         }
     }
 
@@ -87,15 +88,12 @@ void MyTableView::paste() {
                 QDomElement e = nodeList.at(i).firstChildElement("td");
 
                 // Grab the data for each of the columns
-                while (!e.isNull()) {
+                while (e.isNull() == false) {
                     data.last() << e.text().toDouble(&ok);
-
-                    if (!ok) {
-                        qWarning("Error converting \"%s\" to a number",
-                                 qPrintable(e.text()));
+                    if (ok == false) {
+                        qWarning("Error converting \"%s\" to a number", qPrintable(e.text()));
                         return;
                     }
-
                     e = e.nextSiblingElement();
                 }
             }
@@ -104,7 +102,7 @@ void MyTableView::paste() {
         }
     }
 
-    if (!hasHtml || !htmlValid) {
+    if (hasHtml == false || htmlValid == false) {
         // Grab the text from the clipboard and split it into lines
         QStringList rows = QApplication::clipboard()->text().split(
                 QRegExp("\\n"), QString::SkipEmptyParts);
@@ -119,7 +117,7 @@ void MyTableView::paste() {
             for (QString &cell : cells) {
                 cell = cell.trimmed();
                 data.last() << cell.toDouble(&ok);
-                if (!ok) {
+                if (ok == false) {
                     qWarning("Error converting \"%s\" to a number", qPrintable(cell));
                     return;
                 }

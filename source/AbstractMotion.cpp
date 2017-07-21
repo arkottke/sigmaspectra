@@ -25,6 +25,7 @@ double AbstractMotion::m_damping = 0.;
 QVector<double> AbstractMotion::m_period = QVector<double>();
 
 AbstractMotion::AbstractMotion() {
+    m_avgLnSa = -1;
     m_prevScale = 1.0;
     m_flag = Unmarked;
 }

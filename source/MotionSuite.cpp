@@ -28,6 +28,7 @@ MotionSuite::MotionSuite(const QVector<double> &period, const QVector<double> &t
         : m_period(period), m_targetLnSa(targetLnSa), m_targetLnStd(targetLnStd) {
     m_rank = 0;
     m_enabled = false;
+    m_medianError = -1;
 }
 
 MotionSuite::~MotionSuite() {
@@ -120,7 +121,7 @@ bool MotionSuite::isValid(const int suiteSize, const int minRequestedCount,
 
     // Check that all of the required motions are present
     for (AbstractMotion *am : requiredMotions) {
-        if (!m_motions.contains(am)) {
+        if (m_motions.contains(am) == false) {
             return false;
         }
     }
@@ -128,7 +129,7 @@ bool MotionSuite::isValid(const int suiteSize, const int minRequestedCount,
     // While this has been checked in the incremental process, it still needs
     // to be checked for totally random suites.
     for (int i = 0; i < m_motions.size(); ++i) {
-        if (!isMotionValid(oneMotionPerStation, m_motions.at(i), i)) {
+        if (isMotionValid(oneMotionPerStation, m_motions.at(i), i) == false) {
             return false;
         }
     }
@@ -289,8 +290,9 @@ void MotionSuite::toText(QTextStream &os, MotionSuite::OutputType type) {
                 // Print the period, median, and standard deviation
                 os << m_period.at(i) << "," << exp(m_lnAvg.at(i)) << "," << m_lnStd.at(i);
                 // Print out the individual motions
-                for (int j = 0; j < rowCount(); ++j)
+                for (int j = 0; j < rowCount(); ++j) {
                     os << "," << selectMotion(j)->sa().at(i);
+                }
                 os << endl;
             }
         }
@@ -359,10 +361,11 @@ QVariant MotionSuite::data(const QModelIndex &index, int role) const {
                 return QString::number(selectMotion(index.row())->dur5_95(), 'f', precision);
             case 7:
                 // Details
-                if (role == Qt::UserRole)
+                if (role == Qt::UserRole) {
                     return "\"" + selectMotion(index.row())->details() + "\"";
-                else
+                } else {
                     return selectMotion(index.row())->details();
+                }
             default:
                 return QVariant();
         }
@@ -372,8 +375,9 @@ QVariant MotionSuite::data(const QModelIndex &index, int role) const {
 }
 
 QVariant MotionSuite::headerData(int section, Qt::Orientation orientation, int role) const {
-    if (role != Qt::DisplayRole && role != Qt::EditRole && role != Qt::UserRole)
+    if (role != Qt::DisplayRole && role != Qt::EditRole && role != Qt::UserRole) {
         return QVariant();
+    }
 
     switch (orientation) {
         case Qt::Horizontal:
@@ -471,18 +475,13 @@ QVector<double> MotionSuite::calcCentroid() {
 
         // Integration step
         const double du = (xR - xL) / (count - 1);
-
-        double uL = 0;
-        double uR = 0;
         double moment = 0;
         for (int j = 0; j < count - 1; ++j) {
-            uL = xL + j * du;
-            uR = xL + (j + 1) * du;
+            double uR = xL + (j + 1) * du;
+            double uL = xL + j * du;
             double area = gsl_cdf_ugaussian_P(uR) - gsl_cdf_ugaussian_P(uL);
-
             moment += area * (uL + uR) / 2;
         }
-
         centroid[i] = moment / dProb;
     }
     return centroid;

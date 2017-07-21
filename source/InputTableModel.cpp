@@ -32,8 +32,9 @@ int InputTableModel::columnCount(const QModelIndex & /*index*/) const {
 }
 
 QVariant InputTableModel::data(const QModelIndex &index, int role) const {
-    if (index.parent() != QModelIndex())
+    if (index.parent() != QModelIndex()) {
         return QVariant();
+    }
 
     if (role == Qt::DisplayRole || role == Qt::EditRole || role == Qt::UserRole) {
         switch (index.column()) {
@@ -52,8 +53,9 @@ QVariant InputTableModel::data(const QModelIndex &index, int role) const {
 }
 
 bool InputTableModel::setData(const QModelIndex &index, const QVariant &value, int role) {
-    if (index.parent() != QModelIndex())
+    if (index.parent() != QModelIndex()) {
         return false;
+    }
 
     // Only allow postive numbers to be entered
     if (value.toDouble() < 0) {

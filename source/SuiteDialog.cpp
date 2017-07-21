@@ -391,11 +391,11 @@ QwtPlot *SuiteDialog::createPlot(const QString &xLabel,
     QwtText text;
     text.setFont(font);
 
-    if (!xLabel.isEmpty()) {
+    if (xLabel.isEmpty() == false) {
         text.setText(xLabel);
         plot->setAxisTitle(QwtPlot::xBottom, text);
     }
-    if (!yLabel.isEmpty()) {
+    if (yLabel.isEmpty() == false) {
         text.setText(yLabel);
         plot->setAxisTitle(QwtPlot::yLeft, text);
     }
@@ -470,30 +470,6 @@ void SuiteDialog::createTabWidget() {
     connect(picker, SIGNAL(appended(QPoint)), this,
             SLOT(indivRespSpecPointSelected(QPoint)));
 
-    // FIXME Add legend!
-    //    // Legend
-    //    QwtLegend* legend = new QwtLegend;
-    //    legend->setFrameStyle(QFrame::Box | QFrame::Sunken);
-    //    m_indivRespSpecPlot->insertLegend(legend, QwtPlot::BottomLegend);
-    //
-    //    // Add the generic curves to the legend
-    //    QwtPlotCurve curveA(tr("Unselected Motion"));
-    //    curveA.setPen(QPen(Qt::darkGray));
-    //    curveA.updateLegend(legend);
-    //
-    //    QwtPlotCurve curveB(tr("Selected Motion"));
-    //    curveB.setPen(QPen(QBrush(Qt::darkGreen), 2));
-    //    curveB.updateLegend(legend);
-    //
-    //    QwtPlotCurve curveC(tr("Median of Suite"));
-    //    curveA.setPen(QPen(Qt::blue), 2);
-    //    curveA.updateLegend(legend);
-    //
-    //    QwtPlotCurve curveB(tr("Selected Motion"));
-    //    curveB.setPen(QPen(QBrush(Qt::darkGreen), 2));
-    //    curveB.updateLegend(legend);
-
-
     QString key = "indivRespSpec";
     // Number of motion pairs
     for (int i = 0; i < m_motionLibrary->suites().first()->rowCount(); ++i) {
@@ -539,3 +515,4 @@ void SuiteDialog::createTabWidget() {
 
     m_plotsTabWidget->addTab(tsFrame, tr("Time Series"));
 }
+

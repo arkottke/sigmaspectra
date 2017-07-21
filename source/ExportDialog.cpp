@@ -124,8 +124,9 @@ void ExportDialog::selectDestination() {
     dialog.setWindowTitle(tr("Select destination directory..."));
     dialog.setViewMode(QFileDialog::Detail);
 
-    if (settings.contains("exportDialog/pathDialog"))
+    if (settings.contains("exportDialog/pathDialog")) {
         dialog.restoreState(settings.value("exportDialog/pathDialog").toByteArray());
+    }
 
     dialog.setDirectory(m_destinationLineEdit->text());
 
@@ -158,7 +159,7 @@ void ExportDialog::tryAccept() {
     // Make the directory if it doesn't exist
     QDir destDir(m_destinationLineEdit->text());
 
-    if (!destDir.exists()) {
+    if (destDir.exists() == false) {
         // Prompt for the creation
         int ret = QMessageBox::question(this, tr("Strata"),
                                         QString(tr("The directory '%1' does not exist.\n Do you want to "
@@ -166,11 +167,12 @@ void ExportDialog::tryAccept() {
                                                 .arg(destDir.absolutePath()),
                                         QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
 
-        if (ret == QMessageBox::No)
+        if (ret == QMessageBox::No) {
             return;
-        else
+        } else {
             // Create the directory
             destDir.mkpath(".");
+        }
     }
 
     QString baseName = m_destinationLineEdit->text() + QDir::separator() + m_prefixLineEdit->text();
@@ -182,13 +184,13 @@ void ExportDialog::tryAccept() {
             break;
         case MotionSuite::CSVOutput:
             for (int i = 0; i < m_suites.size(); ++i) {
-                if (!m_suites.at(i)->enabled()) {
+                if (m_suites.at(i)->enabled() == false) {
                     continue;
                 }
 
                 QFile file(QString("%1-%2.csv").arg(baseName).arg(i + 1));
 
-                if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) { 
+                if (file.open(QIODevice::WriteOnly | QIODevice::Text) == false) { 
                     qCritical() << "Unable to open file:" << file.fileName();
                 }
 
@@ -198,12 +200,13 @@ void ExportDialog::tryAccept() {
             break;
         case MotionSuite::StrataOutput:
             for (int i = 0; i < m_suites.size(); ++i) {
-                if (!m_suites.at(i)->enabled())
+                if (m_suites.at(i)->enabled() == false) {
                     continue;
+                }
 
                 QFile file(QString("%1-%2.csv").arg(baseName).arg(i + 1));
 
-                if (!file.open(QIODevice::WriteOnly | QIODevice::Text)){
+                if (file.open(QIODevice::WriteOnly | QIODevice::Text) == false) {
                     qCritical() << "Unable to open file:" << file.fileName();
                 }
 
@@ -214,7 +217,7 @@ void ExportDialog::tryAccept() {
         case MotionSuite::SHAKE2000Output: {
             QFile file(QDir::currentPath() + QDir::separator() + "SuiteLog.txt");
 
-            if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            if (file.open(QIODevice::WriteOnly | QIODevice::Text) == false) {
                 qCritical() << "Unable to open file:" << file.fileName();
             }
 
@@ -224,8 +227,9 @@ void ExportDialog::tryAccept() {
                 << endl;
 
             for (int i = 0; i < m_suites.size(); ++i) {
-                if (!m_suites.at(i)->enabled())
+                if (m_suites.at(i)->enabled() == false) {
                     continue;
+                }
 
                 out << QString("[ %1 of %2 ]\n").arg(i + 1).arg(m_suites.size());
                 m_suites.at(i)->toText(out, MotionSuite::SHAKE2000Output);
@@ -242,7 +246,7 @@ void ExportDialog::tryAccept() {
 
         QFile file(destinationDir + QDir::separator() + "summary.csv");
 
-        if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        if (file.open(QIODevice::WriteOnly | QIODevice::Text) == false) {
             qCritical() << "Unable to open file:" << file.fileName();
         }
 
