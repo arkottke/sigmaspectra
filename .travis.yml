@@ -31,6 +31,7 @@ script:
       # CMAKE_SKIP_RPATH=ON is required to prevent CMake from removing the runtime path from the exectuable
       # -DCMAKE_SKIP_RPATH=ON
     - cmake .. -DQWT_ROOT_DIR=$QWT_ROOT_DIR -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:STRING=dist
+    - echo $PROJECT_VERSION
     - make -j$(nproc)
     - make install
     - find dist/
