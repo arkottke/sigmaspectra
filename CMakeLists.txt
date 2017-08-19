@@ -76,7 +76,9 @@ endif()
 
 # Qt Installer Framework 
 set(CPACK_PACKAGE_NAME SigmaSpectra)
-set(CPACK_PACKAGE_FILE_NAME installer)
+set(CPACK_PACKAGE_FILE_NAME 
+    SigmaSpectra-$ENV{platform}-v${PROJECT_VERSION}-${PROJECT_GITHASH}
+)
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Installation Tool")
 set(CPACK_PACKAGE_VERSION "1.0.0") # Version of installer
  set(CPACK_COMPONENTS_ALL executable manual example)
@@ -89,8 +91,8 @@ include(CPackIFW REQUIRED)
 
 cpack_add_component(
     executable
-    DISPLAY_NAME "SigmaSpectra"
-    DESCRIPTION "Executable and libraries"
+    DISPLAY_NAME "Executable"
+    DESCRIPTION "SigmaSpectra executable"
     REQUIRED
 )
 
@@ -101,6 +103,14 @@ cpack_ifw_configure_component(
     VERSION ${PROJECT_VERSION} # Version of component
     LICENSES License ${CMAKE_SOURCE_DIR}/LICENSE
     DEFAULT TRUE
+)
+
+
+cpack_add_component(
+    dependencies
+    DISPLAY_NAME "Dependencies"
+    DESCRIPTION "SigmaSpectra dependencies"
+    REQUIRED
 )
 
 cpack_add_component(

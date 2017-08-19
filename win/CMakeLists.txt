@@ -47,7 +47,11 @@ if (MSVC)
     # Visual Studio
     set(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP true)
     include(InstallRequiredSystemLibraries)
-    install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION .)
+    install(
+        FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} 
+        DESTINATION .
+        COMPONENT dependencies
+        )
 else()
     # MinGW
     get_filename_component(MINGW_DLL_DIR ${CMAKE_CXX_COMPILER} PATH)
@@ -56,6 +60,7 @@ else()
         ${MINGW_DLL_DIR}/libstdc++-6.dll
         ${QT_DLL_DIR}/libwinpthread-1.dll
         DESTINATION .
+        COMPONENT dependencies
         )
 endif()
 
@@ -70,39 +75,28 @@ install(FILES
     ${QT_DLL_DIR}/Qt5Xml.dll
     ${CMAKE_SOURCE_DIR}/win/qt.conf
     DESTINATION .
+    COMPONENT dependencies
     )
 # Qwt Library
 get_filename_component(QWT_DLL_DIR ${QWT_LIBRARY} PATH)
 install(FILES
     ${QWT_DLL_DIR}/qwt.dll
     DESTINATION .
+    COMPONENT dependencies
     )
 # GSL Library
 get_filename_component(GSL_DLL_DIR ${GSL_LIBRARY} PATH)
 install(FILES
     ${GSL_DLL_DIR}/../bin/gsl.dll
     DESTINATION .
+    COMPONENT dependencies
     )  
 # Qt Platform Plugin
 install(FILES
     ${QT_DLL_DIR}/../plugins/platforms/qwindows.dll
     DESTINATION plugins/platforms
+    COMPONENT dependencies
     )
-# Custom target to build the WiX installer. Should be run after the install
-# target.
-if (WIX_PATH)
-    add_custom_target(installer
-        COMMAND ${WIX_PATH}/candle.exe 
-        -arch $ENV{platform}
-        ${CMAKE_CURRENT_BINARY_DIR}/installer.wxs
-        COMMAND ${WIX_PATH}/light.exe -ext WixUIExtension -ext WixUtilExtension
-        -b ${CMAKE_INSTALL_PREFIX} -b ${CMAKE_SOURCE_DIR}/win
-        -out "${PROJECT_LONGNAME}-$ENV{platform}-v${PROJECT_VERSION}-${PROJECT_GITHASH}.msi"
-        installer.wixobj
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-        VERBATIM
-        )
-endif()
 
 if (7Z_PATH)
     message(${CMAKE_BINARY_DIR})
