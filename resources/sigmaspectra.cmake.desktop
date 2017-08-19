@@ -3,9 +3,6 @@
 # The type as listed above
 Type=Application
 
-# The version of the desktop entry specification to which this file complies
-Version=1.1
-
 # The name of the application
 Name=@PROJECT_LONGNAME@
 
