@@ -14,7 +14,7 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 ###
 
-cmake_minimum_required(VERSION 2.8.11)
+cmake_minimum_required(VERSION 3.4)
 
 # Default configuration values. These must be before the project command or
 # they won't work in Windows.
@@ -65,6 +65,7 @@ endif()
 enable_testing()
 set(TEST_LINK_LIBRARIES Qt5::Test)
 
+# add_subdirectory(packages)
 add_subdirectory(resources)
 add_subdirectory(source)
 add_subdirectory(tests)
@@ -72,3 +73,47 @@ add_subdirectory(tests)
 if (WIN32)
   add_subdirectory(win)
 endif()
+
+# Qt Installer Framework 
+set(CPACK_PACKAGE_NAME SigmaSpectra)
+set(CPACK_PACKAGE_FILE_NAME installer)
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Installation Tool")
+set(CPACK_PACKAGE_VERSION "1.0.0") # Version of installer
+ set(CPACK_COMPONENTS_ALL executable manual example)
+set(CPACK_IFW_PACKAGE_START_MENU_DIRECTORY SigmaSpectra)
+set(CPACK_GENERATOR IFW)
+set(CPACK_IFW_VERBOSE ON)
+
+include(CPack REQUIRED)
+include(CPackIFW REQUIRED)
+
+cpack_add_component(
+    executable
+    DISPLAY_NAME "SigmaSpectra"
+    DESCRIPTION "Executable and libraries"
+    REQUIRED
+)
+
+cpack_ifw_configure_component(
+    executable
+    FORCED_INSTALLATION
+    NAME arkottke.sigmaspectra.executable
+    VERSION ${PROJECT_VERSION} # Version of component
+    LICENSES License ${CMAKE_SOURCE_DIR}/LICENSE
+    DEFAULT TRUE
+)
+
+cpack_add_component(
+    manual
+    NAME arkottke.sigmaspectra.manual
+    DISPLAY_NAME "User's manual"
+    DESCRIPTION "User's manual"
+)
+
+cpack_add_component(
+    example
+    NAME arkottke.sigmaspectra.example
+    DISPLAY_NAME "Example"
+    DESCRIPTION "Example target and motions"
+)
+
