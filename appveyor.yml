@@ -38,14 +38,14 @@ build_script:
     - CD build
     - cmake -DGSL_ROOT_DIR=%GSL_ROOT_DIR% -DQWT_ROOT_DIR=%QWT_ROOT_DIR% -G "%CMAKE_GENERATOR%" ..
     - cmake --build . --target install
-    - cmake --build . --target installer
+    - cmake --build . --target package
     - cmake --build . --target archive
 
 artifacts:
     - path: build\SigmaSpectra-*.zip
       name: Zip Archive
 
-    - path: build\SigmaSpectra-*.msi
+    - path: build\SigmaSpectra-*.exe
       name: Installer
 
 deploy:
