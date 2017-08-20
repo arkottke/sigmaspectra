@@ -436,7 +436,7 @@ bool MotionLibrary::readMotions() {
             return false;
         }
 
-        if (interp(m_inputPeriod, m_inputLnStd, m_period, m_targetLnStd)) {
+        if (interp(m_inputPeriod, m_inputLnStd, m_period, m_targetLnStd) == false) {
             return false;
         }
     } else {
