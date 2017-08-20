@@ -3,47 +3,51 @@ language: cpp
 dist: trusty
 
 branches:
-    except:
-        - /^appveyor.*$/
-
+  except:
+    - /^appveyor.*$/
 
 before_install:
-    # https://launchpad.net/~beineri/+archive/ubuntu/opt-qt59
-    - sudo add-apt-repository --yes ppa:beineri/opt-qt59-trusty
-    - sudo apt-get update -qq
+  # https://launchpad.net/~beineri/+archive/ubuntu/opt-qt59
+  - sudo add-apt-repository --yes ppa:beineri/opt-qt59-trusty
+  - sudo apt-get update -qq
 
 install:
-    - sudo apt-get install -qq libgsl0-dev qt59base qt59tools qt59svg
-    - source /opt/qt59/bin/qt59-env.sh
-    - cd $TRAVIS_BUILD_DIR/..
-    - svn checkout svn://svn.code.sf.net/p/qwt/code/branches/qwt-6.1 qwt
-    - cd qwt
-    - QWT_ROOT_DIR=`pwd`
-    - LD_LIBRARY_PATH=$(readlink -f lib):$LD_LIBRARY_PATH
-    - qmake
-    - make -j$(nproc)
+  - sudo apt-get install -qq libgsl0-dev qt59base qt59tools qt59svg
+  - source /opt/qt59/bin/qt59-env.sh
+  - cd $TRAVIS_BUILD_DIR/..
+  - svn checkout svn://svn.code.sf.net/p/qwt/code/branches/qwt-6.1 qwt
+  - cd qwt
+  - QWT_ROOT_DIR=`pwd`
+  - LD_LIBRARY_PATH=$(readlink -f lib):$LD_LIBRARY_PATH
+  - qmake
+  - make -j$(nproc)
 
 script:
-    - cd $TRAVIS_BUILD_DIR
-    - mkdir build
-    - cd build
-      # Add paths for libraries
-      # CMAKE_SKIP_RPATH=ON is required to prevent CMake from removing the runtime path from the exectuable
-      # -DCMAKE_SKIP_RPATH=ON
-    - cmake .. -DQWT_ROOT_DIR=$QWT_ROOT_DIR -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:STRING=dist
-    - echo $PROJECT_VERSION
-    - make -j$(nproc)
-    - make install
-    - wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
-    - chmod a+x linuxdeployqt*.AppImage
-      # - unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
-    - ldd dist/usr/bin/sigmaspectra
-    - ./linuxdeployqt-*.AppImage dist/sigmaspectra.desktop -bundle-non-qt-libs -no-translations
-    - ./linuxdeployqt-*.AppImage dist/sigmaspectra.desktop -appimage
+  - cd $TRAVIS_BUILD_DIR
+  - mkdir build
+  - cd build
+    # Add paths for libraries
+    # CMAKE_SKIP_RPATH=ON is required to prevent CMake from removing the runtime path from the exectuable
+    # -DCMAKE_SKIP_RPATH=ON
+  - cmake .. -DQWT_ROOT_DIR=$QWT_ROOT_DIR -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:STRING=dist
+  - echo $PROJECT_VERSION
+  - make -j$(nproc)
+  - make install
+  - wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
+  - chmod a+x linuxdeployqt*.AppImage
+    # - unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
+  - ldd dist/usr/bin/sigmaspectra
+  - ./linuxdeployqt-*.AppImage dist/sigmaspectra.desktop -bundle-non-qt-libs -no-translations
+  - ./linuxdeployqt-*.AppImage dist/sigmaspectra.desktop -appimage
+  - find ./dist -executable -type f -exec ldd {} \; | grep " => /usr" | cut -d " " -f 2-3 | sort | uniq
 
 after_success:
-      # Upload AppImage to transfer.sh
-    - find ./dist -executable -type f -exec ldd {} \; | grep " => /usr" | cut -d " " -f 2-3 | sort | uniq
-    - VERSION=$(sed -ne 's/.*VERSION "\([0-9.]\+\)".*/\1/p' ../CMakeLists.txt)
-    - GITHASH=$(git rev-parse --short HEAD)
-    - curl --upload-file ./SigmaSpectra*.AppImage https://transfer.sh/SigmaSpectra-v$VERSION-$GITHASH-x86_64.AppImage
+  # Upload AppImage to transfer.sh
+  #- VERSION=$(sed -ne 's/.*VERSION "\([0-9.]\+\)".*/\1/p' ../CMakeLists.txt)
+  #- GITHASH=$(git rev-parse --short HEAD)
+  #- curl --upload-file ./SigmaSpectra*.AppImage https://transfer.sh/SigmaSpectra-v$VERSION-$GITHASH-x86_64.AppImage
+  - ls -lh
+  - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
+  - bash ./upload.sh *.AppImage
+
+# vim: ts=2:sw=2
