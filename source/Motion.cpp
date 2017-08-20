@@ -22,6 +22,7 @@
 #include "Motion.h"
 
 #include <QDir>
+#include <QRegExp>
 #include <QTextStream>
 #include <QtDebug>
 
@@ -109,9 +110,11 @@ void Motion::processFile() {
     //
     // Find the station and event identifiers
     //
-    QRegExp rx(".*/([^/]+)/([^/"
-                       "]+)((?:\\d{3})|(?:-{0,2}[NSEWTLR]+)|(?:NOR)|(?:SOU)|(?:EAS)|(?:"
-                       "WES))(\\.AT2$)");
+    QRegExp rx(
+            ".*/([^/]+)/"
+            "([^/]+)((?:\\d{3})|(?:-{0,2}[NSEWTLR]+)|"
+            "(?:NOR)|(?:SOU)|(?:EAS)|(?:WES))"
+            "(\\.AT2$)");
     int pos = rx.indexIn(fileInfo.absoluteFilePath());
     if (pos > -1) {
         m_event = rx.cap(1);
@@ -138,11 +141,30 @@ void Motion::processFile() {
         // Skip the third line
         line = fin.readLine();
         // Read the number of data points and timestep
-        fin >> n >> m_dt;
+        QList<QRegExp> patterns = {
+            // Example: 8751    0.0040    NPTS, DT
+            QRegExp("(\\d+)\\s+([0-9.]+)\\s+NPTS, DT"),
+            // Example: NPTS=   7998, DT=   .0050 SEC,                                             
+            // Example: NPTS=   3666, DT=   0.025 SEC
+            QRegExp("NPTS=\\s+(\\d+), DT=\\s+([0-9.]+) SEC,?"),
+        };
+        line = fin.readLine();
+        bool success = false;
+        for (QRegExp &pattern: patterns) {
+            int pos = pattern.indexIn(line);
+            if (pos < 0) {
+                continue;
+            }
+            int n = pattern.cap(1).toInt();
+            m_dt = pattern.cap(2).toDouble();
+            success = true;
+        }
+        if (!success) {
+            throw QString("Error parsing: %1").arg(line);
+        }
         // Finish reading the line
         line = fin.readLine();
     } else {
-        // FIXME
         throw (std::string("File type not supported!"));
     }
 
