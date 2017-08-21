@@ -117,7 +117,7 @@ set(CPACK_PACKAGE_FILE_NAME
 )
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Installation Tool")
 set(CPACK_PACKAGE_VERSION "1.0.0") # Version of installer
- set(CPACK_COMPONENTS_ALL executable manual example)
+set(CPACK_COMPONENTS_ALL executable dependencies manual example)
 set(CPACK_IFW_PACKAGE_START_MENU_DIRECTORY SigmaSpectra)
 set(CPACK_GENERATOR IFW)
 set(CPACK_IFW_VERBOSE ON)
