@@ -45,3 +45,4 @@ deploy:
   file: SigmaSpectra-v$VERSION-$GITHASH-x86_64.AppImage
   on:
     repo: arkottke/sigmaspectra
+    tags: true
