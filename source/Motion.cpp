@@ -155,7 +155,7 @@ void Motion::processFile() {
             if (pos < 0) {
                 continue;
             }
-            int n = pattern.cap(1).toInt();
+            n = pattern.cap(1).toInt();
             m_dt = pattern.cap(2).toDouble();
             success = true;
         }
