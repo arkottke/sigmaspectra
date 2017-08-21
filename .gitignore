@@ -1,3 +1,6 @@
+# CLion files
+.idea/
+
 # C++ objects and libs
 
 *.slo
