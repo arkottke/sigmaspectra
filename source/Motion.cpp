@@ -159,7 +159,7 @@ void Motion::processFile() {
             m_dt = pattern.cap(2).toDouble();
             success = true;
         }
-        if (!success) {
+        if (success == false) {
             throw QString("Error parsing: %1").arg(line);
         }
         // Finish reading the line
