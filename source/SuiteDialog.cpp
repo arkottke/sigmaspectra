@@ -135,11 +135,11 @@ void SuiteDialog::motionSelected() {
     // Plot the time histories
     const Motion *motion = m_selectedSuite->selectMotion(index);
 
-    // Set the data
+    // Set the data -- QMap with the same key is sorted from most recently to least recently inserted.
     QList<QwtPlotCurve *> curves = m_curves.values("timeSeries");
-    curves.at(0)->setSamples(motion->time(), motion->acc());
+    curves.at(0)->setSamples(motion->time(), motion->disp());
     curves.at(1)->setSamples(motion->time(), motion->vel());
-    curves.at(2)->setSamples(motion->time(), motion->disp());
+    curves.at(2)->setSamples(motion->time(), motion->acc());
 }
 
 void SuiteDialog::showTimeHistoryTab() {
