@@ -27,6 +27,9 @@ public:
 
     ~Motion();
 
+    //! Read the file and compute the response spectrum
+    bool processFile();
+
     virtual QString name() const;
 
     const QString &fileName() const;
@@ -59,8 +62,7 @@ public:
     void scaleBy(const double factor);
 
 protected:
-    //! Read the file and compute the response spectrum
-    void processFile();
+
 
     /*! Compute the acceleration response spectrum.
          * \param damping damping of the oscillators
