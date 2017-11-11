@@ -173,7 +173,7 @@ bool Motion::processFile() {
     while (lines.size() < 4) {
       lines += fin.readLine();
     }
-    if (not parseAt2Metadata(fileInfo, lines, &n)) {
+    if (!parseAt2Metadata(fileInfo, lines, &n)) {
       return false;
     }
   } else {
