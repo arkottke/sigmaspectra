@@ -414,6 +414,20 @@ bool MotionLibrary::interp(const QVector<double> &x, const QVector<double> &y,
   return true;
 }
 
+bool isAt2Vertical(const QString &fileName) {
+  QStringList endings = {"-UP.AT2", "UD.AT2", "-V.AT2", "DN.AT2", "DWN.AT2"};
+  for (auto e : endings) {
+    if (fileName.endsWith(e, Qt::CaseInsensitive)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool motionCompare(Motion *left, Motion *right) {
+  return left->name() < right->name();
+}
+
 bool MotionLibrary::readMotions() {
   m_okToContinue = true;
   // Check the input, if false then there is an error
@@ -486,25 +500,45 @@ bool MotionLibrary::readMotions() {
                     QDir::AllDirs | QDir::Files | QDir::Readable,
                     QDirIterator::Subdirectories);
 
+    // Keep track of the percent
+    int nextPercent = 1;
+    int percent = 0;
+    emit percentChanged(percent);
+
     while (it.hasNext()) {
-      if (it.next().endsWith(".AT2")) {
+      QString filePath = it.next();
+      if (filePath.endsWith(".AT2", Qt::CaseInsensitive)) {
+        if (isAt2Vertical(filePath)) {
+          emit logText("Skipping (vertical): " +
+                       QDir::toNativeSeparators(filePath));
+          continue;
+        }
         // Update the log
         QApplication::processEvents();
-
-        auto m = new Motion(it.filePath());
+        auto m = new Motion(filePath);
         if (m->processFile()) {
-          emit logText("Loaded: " + QDir::toNativeSeparators(it.filePath()));
+          emit logText("Loaded: " + QDir::toNativeSeparators(filePath));
           motions << m;
         } else {
           emit logText("!! Error reading: " +
-                       QDir::toNativeSeparators(it.filePath()));
+                       QDir::toNativeSeparators(filePath));
         }
       }
 
       if (m_okToContinue == false) {
         return false;
       }
+
+      percent = int(100 * motions.size() / m_motionCount);
+      if (percent >= nextPercent) {
+        // Emit a new percent complete is avaiable
+        emit percentChanged(percent);
+        nextPercent = percent + 1;
+      }
     }
+
+    // Sort the motions by name
+    std::sort(motions.begin(), motions.end(), motionCompare);
 
     if (m_combineComponents) {
       // Combine motions from the same event and station
@@ -565,11 +599,11 @@ int MotionLibrary::countPath(const QString &path) {
                   QDirIterator::Subdirectories);
 
   while (it.hasNext()) {
-    if (it.next().endsWith(".AT2")) {
+    QString filePath = it.next();
+    if (!isAt2Vertical(filePath)) {
       ++count;
     }
   }
-
   return count;
 }
 

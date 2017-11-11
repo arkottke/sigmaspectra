@@ -40,7 +40,8 @@ QString Motion::name() const {
     QFileInfo fi(m_fileName);
     name = fi.dir().dirName() + QDir::separator() + fi.fileName();
   } else {
-    name = m_event + QDir::separator() + m_station + m_comp;
+    QStringList parts = {m_event, m_station, m_comp};
+    name = parts.join(QDir::separator());
   }
 
   return name;
@@ -90,6 +91,67 @@ void Motion::scaleBy(const double factor) {
   AbstractMotion::scaleBy(factor);
 }
 
+bool Motion::parseAt2Metadata(QFileInfo &fileInfo, QStringList &lines,
+                              int *count) {
+
+  /*
+   * AT2 files contain 4 header lines:
+   * (0) Not important
+   * (1) Event information
+   * (2) Not important
+   * (3) number of data points, time step
+   */
+  m_details = lines.at(1).trimmed();
+
+  // Read the event information and trim the white space
+  m_comp.clear();
+
+  // Try to determine the metadata from the details -- modern format supports
+  // this
+  QStringList parts = m_details.split(",");
+  if (parts.size() == 4) {
+    // Determine event, station, and component from header.
+    m_event = parts.at(0).trimmed();
+    m_station = parts.at(2).trimmed();
+    m_comp = parts.at(3).trimmed();
+  }
+
+  // The older formatted PEER motions require specific file structure.
+  if (m_comp.isEmpty()) {
+    QRegExp rx(".*/([^/]+)/"
+               "([^/]+)((?:\\d{3})|(?:-{0,2}[NSEWTLR]+)|"
+               "(?:NOR)|(?:SOU)|(?:EAS)|(?:WES))"
+               "(\\.AT2$)");
+    int pos = rx.indexIn(fileInfo.absoluteFilePath());
+    if (pos > -1) {
+      m_event = rx.cap(1);
+      m_station = rx.cap(2);
+      m_comp = rx.cap(3);
+    }
+  }
+
+  // Read the number of data points and timestep
+  QList<QRegExp> patterns = {
+      // Example: 8751    0.0040    NPTS, DT
+      QRegExp("(\\d+)\\s+([0-9.]+)\\s+NPTS, DT"),
+      // Example: NPTS=   7998, DT=   .0050 SEC,
+      // Example: NPTS=   3666, DT=   0.025 SEC
+      QRegExp("NPTS=\\s+(\\d+), DT=\\s+([0-9.]+) SEC,?"),
+  };
+  *count = 0;
+  for (QRegExp &pattern : patterns) {
+    int pos = pattern.indexIn(lines.at(3));
+    if (pos < 0) {
+      continue;
+    }
+    *count = pattern.cap(1).toInt();
+    m_dt = pattern.cap(2).toDouble();
+    break;
+  }
+
+  return !m_comp.isEmpty() && (*count > 0);
+}
+
 bool Motion::processFile() {
   QFileInfo fileInfo(m_fileName);
 
@@ -107,51 +169,11 @@ bool Motion::processFile() {
   int n;
   // Read the header based on file type
   if (m_fileName.endsWith(".AT2", Qt::CaseInsensitive)) {
-    /*
-     * AT2 files contain 4 header lines:
-     * (1) Not important
-     * (2) Event information
-     * (3) Not important
-     * (4) number of data points, time step
-     */
-    // Skip the first line
-    QString line = fin.readLine();
-    // Read the event information and trim the white space
-    m_details = fin.readLine().trimmed();
-
-    QStringList parts = m_details.split(",");
-    if (parts.size() == 4) {
-      // Determine event, station, and component from header.
-      m_event = parts.at(0).trimmed();
-      m_station = parts.at(2).trimmed();
-      m_comp = parts.at(3).trimmed();
-    } else {
-      return false;
+    QStringList lines;
+    while (lines.size() < 4) {
+      lines += fin.readLine();
     }
-
-    // Skip the third line
-    line = fin.readLine();
-    // Read the number of data points and timestep
-    QList<QRegExp> patterns = {
-        // Example: 8751    0.0040    NPTS, DT
-        QRegExp("(\\d+)\\s+([0-9.]+)\\s+NPTS, DT"),
-        // Example: NPTS=   7998, DT=   .0050 SEC,
-        // Example: NPTS=   3666, DT=   0.025 SEC
-        QRegExp("NPTS=\\s+(\\d+), DT=\\s+([0-9.]+) SEC,?"),
-    };
-    line = fin.readLine();
-    bool success = false;
-    for (QRegExp &pattern : patterns) {
-      int pos = pattern.indexIn(line);
-      if (pos < 0) {
-        continue;
-      }
-      n = pattern.cap(1).toInt();
-      m_dt = pattern.cap(2).toDouble();
-      success = true;
-      break;
-    }
-    if (success == false) {
+    if (not parseAt2Metadata(fileInfo, lines, &n)) {
       return false;
     }
   } else {
