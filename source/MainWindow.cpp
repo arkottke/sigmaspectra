@@ -156,10 +156,12 @@ void MainWindow::compute() {
 
     // Enable the group boxes
     m_targetGroupBox->setEnabled(true);
-    m_periodGroupBox->setEnabled(true);
     m_libraryGroupBox->setEnabled(true);
     m_computePushButton->setEnabled(true);
     m_cancelPushButton->setEnabled(false);
+    if (m_interpolateCheckBox->isChecked()) {
+        m_periodGroupBox->setEnabled(true);
+    }
 }
 
 void MainWindow::cellSelected() {
