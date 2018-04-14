@@ -457,6 +457,21 @@ bool MotionLibrary::readMotions() {
         m_targetSaMinusStd[i] = exp(m_targetLnSa.at(i) - m_targetLnStd.at(i));
     }
 
+    // Check that the periods lengths agree if not reprocess
+    if (m_motions.size() > 0) {
+        const QVector<double> &period = m_motions.first()->period();
+        if (period.size() != m_period.size()) {
+            m_motionsNeedProcessing = true;
+        } else {
+            for (int i = 0; i < m_period.size(); ++i) {
+                if (period.at(i) != m_period.at(i)) {
+                    m_motionsNeedProcessing = true;
+                    break;
+                }
+            }
+        }
+    }
+
     if (m_motionsNeedProcessing) {
         emit logText("Processing motion files");
 
