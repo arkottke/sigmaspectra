@@ -20,12 +20,12 @@ cmake_minimum_required(VERSION 3.2)
 # they won't work in Windows.
 # If no build type is specified, default to "Release"
 if (NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release CACHE STRING "None Debug Release RelWithDebInfo MinSizeRel" FORCE)
+    set(CMAKE_BUILD_TYPE Release CACHE STRING "None Debug Release RelWithDebInfo MinSizeRel" FORCE)
 endif()
 # Install to "dist" directory in Windows for testing and as a staging directory
 # for the installer.
 if (WIN32 AND NOT CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX dist CACHE STRING "Install path prefix.")
+    set(CMAKE_INSTALL_PREFIX dist CACHE STRING "Install path prefix.")
 endif()
 
 project(sigmaspectra)
@@ -35,7 +35,7 @@ execute_process(
     COMMAND git rev-parse --short HEAD 
     OUTPUT_VARIABLE PROJECT_GITHASH
     OUTPUT_STRIP_TRAILING_WHITESPACE)
-set(PROJECT_VERSION "1.0.1")
+set(PROJECT_VERSION "1.0.4")
 
 # Global CMake options
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -57,8 +57,13 @@ set(LIBS ${LIBS} ${GSL_LIBRARIES} ${QWT_LIBRARIES})
 set(CMAKE_CXX_STANDARD 14)
 
 if(MSVC)
-  # Add GSL DLL definition for MSVC
-  add_definitions(-DGSL_DLL)
+    # Add GSL DLL definition for MSVC. Add define for math constants
+    add_definitions(-DGSL_DLL -D_USE_MATH_DEFINES)
+    # Optimize for speed and link dynamically "-MD"
+    set(CMAKE_CXX_FLAGS_RELEASE "-O2")
+else()
+    # Add optimization for GCC
+    set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 endif()
 
 # Testing configuration
@@ -71,5 +76,5 @@ add_subdirectory(source)
 add_subdirectory(tests)
 
 if (WIN32)
-  add_subdirectory(win)
+    add_subdirectory(win)
 endif()
