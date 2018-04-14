@@ -23,9 +23,10 @@
 #include "defines.h"
 
 #include <QApplication>
+#include <QMessageBox>
 
-void myMessageOutput(QtMsgType type, const QMessageLogContext &context,
-                     const QString &msg) {
+void debugHandler(QtMsgType type, const QMessageLogContext &context,
+        const QString &msg) {
     QByteArray localMsg = msg.toLocal8Bit();
     switch (type) {
         case QtDebugMsg:
@@ -51,8 +52,51 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &context,
     }
 }
 
+void releaseHandler(QtMsgType type, const QMessageLogContext &context,
+        const QString &msg) {
+
+    QWidget *widget = QApplication::activeWindow();
+
+    switch (type) {
+        case QtDebugMsg:
+            QMessageBox::information(
+                    widget,
+                    QString("%1 - %2").arg(PROJECT_LONGNAME).arg("Debug"),
+                    msg);
+            break;
+        case QtInfoMsg:
+            QMessageBox::information(
+                    widget,
+                    QString("%1 - %2").arg(PROJECT_LONGNAME).arg("Information"),
+                    msg);
+            break;
+        case QtWarningMsg:
+            QMessageBox::warning(
+                    widget,
+                    QString("%1 - %2").arg(PROJECT_LONGNAME).arg("Warning"),
+                    msg);
+            break;
+        case QtCriticalMsg:
+            QMessageBox::critical(
+                    widget,
+                    QString("%1 - %2").arg(PROJECT_LONGNAME).arg("Critical"),
+                    msg);
+            break;
+        case QtFatalMsg:
+            QMessageBox::critical(
+                    widget,
+                    QString("%1 - %2").arg(PROJECT_LONGNAME).arg("Fatal"),
+                    msg);
+            abort();
+    }
+}
+
 int main(int argc, char *argv[]) {
-    qInstallMessageHandler(myMessageOutput);
+#ifdef Debug
+    qInstallMessageHandler(debugHandler);
+#else
+    qInstallMessageHandler(releaseHandler);
+#endif
 
     QCoreApplication::setOrganizationName("ARKottke");
     QCoreApplication::setApplicationName(PROJECT_LONGNAME);

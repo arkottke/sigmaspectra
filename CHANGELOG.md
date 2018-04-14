@@ -1,3 +1,6 @@
+# v1.0.5 - 2018-04-14
+* Added message box for debugging and errors
+
 # v1.0.4 - 2018-04-14
 * Check the target spectrum for changes in the periods
 * Fixed period group box being enabled after calculation
