@@ -1,5 +1,6 @@
 # v1.0.4 - 2018-04-14
 * Check the target spectrum for changes in the periods
+* Fixed period group box being enabled after calculation
 
 # v1.0.1 - 2017-10-16
 * Fixed #3 -- order of time series in results
