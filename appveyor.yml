@@ -16,10 +16,10 @@ environment:
     fast_finish: true
     matrix:
         - PLATFORM: x86
-          QT5: C:\Qt\5.9\msvc2015
+          QT5: C:\Qt\5.11\msvc2015
           CMAKE_GENERATOR: "NMake Makefiles"
         - PLATFORM: x64
-          QT5: C:\Qt\5.9\msvc2015_64
+          QT5: C:\Qt\5.11\msvc2015_64
           CMAKE_GENERATOR: "NMake Makefiles"
 
 configuration: Release

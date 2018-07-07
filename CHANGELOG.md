@@ -1,3 +1,6 @@
+# v1.0.6 - 2018-07-07
+* Updated to Qt 5.11
+
 # v1.0.5 - 2018-04-14
 * Added message box for debugging and errors
 
