@@ -1,3 +1,6 @@
+# v1.0.7 - 2019-12-13
+* Update Qt version
+
 # v1.0.6 - 2018-07-07
 * Updated to Qt 5.11
 
