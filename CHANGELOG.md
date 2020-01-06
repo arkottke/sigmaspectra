@@ -1,3 +1,6 @@
+# v1.0.8 - 2020-01-06
+* Update Travis script to fix change in AppImage build names.
+
 # v1.0.7 - 2019-12-13
 * Update Qt version
 

@@ -36,8 +36,8 @@ after_success:
 - ls -lh
 - VERSION=$(sed -ne 's/.*VERSION "\([0-9.]\+\)".*/\1/p' ../CMakeLists.txt)
 - GITHASH=$(git rev-parse --short HEAD)
-- curl --upload-file ./SigmaSpectra-x86_64.AppImage https://transfer.sh/SigmaSpectra-x86_64.AppImage
-- mv SigmaSpectra-x86_64.AppImage SigmaSpectra-v$VERSION-$GITHASH-x86_64.AppImage
+- curl --upload-file ./SigmaSpectra-*.AppImage https://transfer.sh/SigmaSpectra-x86_64.AppImage
+- mv SigmaSpectra-*.AppImage SigmaSpectra-v$VERSION-$GITHASH-x86_64.AppImage
 deploy:
   skip_cleanup: true
   provider: releases
