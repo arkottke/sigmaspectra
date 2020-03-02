@@ -29,6 +29,7 @@
 #include <gsl/gsl_spline.h>
 
 #include <QApplication>
+#include <QElapsedTimer>
 #include <QDir>
 #include <QDirIterator>
 #include <QSettings>
@@ -478,10 +479,6 @@ bool MotionLibrary::readMotions() {
         m_targetSaMinusStd[i] = exp(m_targetLnSa.at(i) - m_targetLnStd.at(i));
     }
 
-    // Delete previously loaded motions
-    while (m_motions.size()) {
-        delete m_motions.takeFirst();
-    }
 
     // Check that the periods lengths agree if not reprocess
     if (m_motions.size() > 0) {
@@ -502,6 +499,11 @@ bool MotionLibrary::readMotions() {
     Motion::setDamping(m_damping / 100.);
 
     if (m_motionsNeedProcessing) {
+        // Delete previously loaded motions
+        while (m_motions.size()) {
+            delete m_motions.takeFirst();
+        }
+
         emit logText("Processing motion files");
 
         QList<Motion *> motions;
@@ -693,7 +695,7 @@ bool MotionLibrary::compute() {
     }
 
     // Sort the suites from smallest median mse to largest
-    qSort(m_suites.begin(), m_suites.end(), lessThan);
+    std::sort(m_suites.begin(), m_suites.end(), lessThan);
 
     // Scale the selected suites
     if (m_okToContinue == false) {
@@ -821,7 +823,7 @@ bool MotionLibrary::selectSuites() {
     emit percentChanged(percent);
     unsigned long count = 0;
     // Keep track of time to estimate estimated time of completion
-    QTime timer;
+    QElapsedTimer timer;
     QTime now;
     timer.start();
 
