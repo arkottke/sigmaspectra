@@ -1,3 +1,7 @@
+# v1.1.0 - 2020-03-02
+* Fixed: Bug with motions being prematurely deleted
+* Fixed: Qt depreciation warnings
+
 # v1.0.8 - 2020-01-06
 * Update Travis script to fix change in AppImage build names.
 
