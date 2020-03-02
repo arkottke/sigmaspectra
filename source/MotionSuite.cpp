@@ -199,7 +199,7 @@ bool lessThan(const AbstractMotion *motionA, const AbstractMotion *motionB) {
 
 void MotionSuite::computeScalars() {
     //Sort the motions from the smallest average spectral response to the largest.
-    qSort(m_motions.begin(), m_motions.end(), lessThan);
+    std::sort(m_motions.begin(), m_motions.end(), lessThan);
 
     //The fractiles are computed for a standard normal distribution with a zero
     //mean and a standard deviation of 1.  The fractiles are ordered from

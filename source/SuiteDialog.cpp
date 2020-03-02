@@ -152,7 +152,7 @@ void SuiteDialog::showTimeHistoryTab() {
 
 void SuiteDialog::exportSuites() {
     // Sort by the RMSE value -- column 2
-    m_suiteListTableView->sortByColumn(2);
+    m_suiteListTableView->sortByColumn(2, Qt::AscendingOrder);
 
     ExportDialog dialog(
             m_motionLibrary->suites(), m_motionLibrary->motionPath(), this);
@@ -208,7 +208,7 @@ void SuiteDialog::copyPlot() {
         }
         // Set the clilpboard image
         QClipboard *clipboard = QApplication::clipboard();
-        clipboard->setPixmap(QPixmap::grabWidget(m_currentPlot));
+        clipboard->setPixmap(m_currentPlot->grab());
 
         for (QwtPlotCurve *curve : m_selectedCurves) {
             highlightCurve(curve);
