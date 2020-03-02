@@ -21,6 +21,8 @@
 
 #include "AbstractMotion.h"
 
+#include <QObject>
+
 double AbstractMotion::m_damping = 0.;
 QVector<double> AbstractMotion::m_period = QVector<double>();
 
